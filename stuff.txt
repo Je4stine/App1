@@ -1,0 +1,25 @@
+{/* <Text style={{alignSelf:'center', marginTop:20, fontSize:24, marginBottom:40}}>Temperature Meter</Text> */}
+
+
+      {/* <ScrollView 
+      horizontal={true}
+      decelerationRate={0}
+      snapToInterval={150}
+      snapToAlignment={"center"}
+      showsHorizontalScrollIndicator={false}>
+        <View style={{flex:1, margin:80}}>
+        <Text style={{alignSelf:'center', marginTop:20, fontSize:24, marginBottom:40}}>Temperature Meter</Text>
+          <Gauges/>
+        </View>
+
+        <View style={{flex:1, margin:80}}>
+        <Text style={{alignSelf:'center', marginTop:20, fontSize:24, marginBottom:40}}>Temperature Meter</Text>
+          <Gauges/>
+        </View>
+
+        <View style={{flex:1, margin:80}}>
+        <Text style={{alignSelf:'center', marginTop:20, fontSize:24, marginBottom:40}}>Temperature Meter</Text>
+          <Gauges/>
+        </View> */}
+         
+       {/* </ScrollView> */}
