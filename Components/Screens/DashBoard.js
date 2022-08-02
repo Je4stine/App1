@@ -3,6 +3,8 @@ import React from 'react';
 import Devices from './Devices';
 import { Ionicons } from '@expo/vector-icons';
 
+
+
 const DashBoard=({navigation})=> {
     return (
       <View style={{flex:1, backgroundColor:"#192734"}}>
@@ -11,13 +13,16 @@ const DashBoard=({navigation})=> {
           <Image source={require('../assets/logo.png')} style={{height:50,width:45, marginRight:20}}/>
           <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>TawioT</Text>
           </View>
+          <TouchableOpacity onPress={()=>navigation.toggleDrawer()}>
           <Ionicons name="menu" size={33} color="#fff" />
+          </TouchableOpacity>
         </View>
         
         <Devices />
         <Devices DeviceId='Pivot01c'/>
         <Devices DeviceId='Pivot01d'/>
         <Devices DeviceId='Pivot01e'/>
+        
         
         <View style={{height:50, width:'100%', position:'absolute',bottom:2,backgroundColor:'green', borderRadius:10, justifyContent:'center'}}>
             <Text style={{alignSelf:'center',fontSize:25, fontWeight:'900',color:'#fff'}}>

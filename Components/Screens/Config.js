@@ -6,37 +6,37 @@ import {AppContext} from '../../AppContext';
 
 
 const Config = ({navigation}) => {
-  const {interval, setInterval}=useContext(AppContext);
-  const {ph, setPh}=useContext(AppContext);
-  const {moisture, setMoisture}=useContext(AppContext);
+  // const {interval, setInterval}=useContext(AppContext);
+  // const {ph, setPh}=useContext(AppContext);
+  // const {moisture, setMoisture}=useContext(AppContext);
 
 
 
 
-  const incrementInterval = ()=>{
-    setInterval (interval+1)
-  };
+  // const incrementInterval = ()=>{
+  //   setInterval (interval+1)
+  // };
 
-  const decrementInterval = ()=>{
-    setInterval (interval-1)
-  };
+  // const decrementInterval = ()=>{
+  //   setInterval (interval-1)
+  // };
 
-  const incrementPh = ()=>{
-    setPh (ph+1)
-  };
+  // const incrementPh = ()=>{
+  //   setPh (ph+1)
+  // };
 
-  const decrementPh = ()=>{
-    setPh (ph-1)
-  };
+  // const decrementPh = ()=>{
+  //   setPh (ph-1)
+  // };
 
 
-  const incrementMoisture = ()=>{
-    setMoisture (moisture+1)
-  };
+  // const incrementMoisture = ()=>{
+  //   setMoisture (moisture+1)
+  // };
 
-  const decrementMoisture = ()=>{
-    setMoisture (moisture-1)
-  };
+  // const decrementMoisture = ()=>{
+  //   setMoisture (moisture-1)
+  // };
 
 
  
@@ -51,7 +51,7 @@ const Config = ({navigation}) => {
         </View>
       </TouchableOpacity>
 
-      <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginLeft:40,marginRight:40, marginBottom:15}}>
+      {/* <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginLeft:40,marginRight:40, marginBottom:15}}>
         
         <Text style={{fontSize:20}}>Device interval</Text>
         
@@ -102,7 +102,7 @@ const Config = ({navigation}) => {
             </TouchableOpacity>
             </View>
         </View>
-      </View>
+      </View> */}
 
       <TouchableOpacity onPress={()=>navigation.navigate('DashBoard')}>
       <View style={{height:50, width:200, borderRadius:4, backgroundColor:'#4C9A2A',marginTop:10, alignItems:'center', justifyContent:'center', alignSelf:'center'}}>

@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tawi-dev-191533-authRole",
+      "UnauthRoleArn": "arn:aws:iam::678832205203:role/amplify-tawi-dev-191533-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::678832205203:role/amplify-tawi-dev-191533-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-tawi-dev-191533-deployment",
+      "UnauthRoleName": "amplify-tawi-dev-191533-unauthRole",
+      "StackName": "amplify-tawi-dev-191533",
+      "StackId": "arn:aws:cloudformation:us-east-1:678832205203:stack/amplify-tawi-dev-191533/58dab1a0-127e-11ed-8267-0af4c0b4746b",
+      "AmplifyAppId": "d1qh4svjypkori"
+    }
+  }
+}

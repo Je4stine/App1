@@ -1,7 +1,9 @@
-import { View, Text, Image } from 'react-native';
-import React from 'react';
+import { View, Text, Image, TextInput } from 'react-native';
+import React,{useState} from 'react';
 
-export default function SensorCard() {
+export default function SensorCard({Depth="10cm",}) {
+    const [depth, setDepth]=useState()
+
   return (
     <View style={{height:250, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2}}>
             <View style={{width:'90%', height:45, borderColor:'#fff', borderWidth:3, borderRadius:12, alignSelf:'center', padding:10, flexDirection:'row', justifyContent:'space-around', alignItems:'center', backgroundColor:'#2A4156', marginBottom:10, marginTop:10}}>
@@ -16,6 +18,17 @@ export default function SensorCard() {
                 <View>
                     <Text style={{fontSize:20, color:'#fff', fontWeight:'bold'}}>Soil-01</Text>  
                 </View>
+                
+               
+                <TextInput
+                    style={{padding:10, height:30, width:'40%', borderColor:'green', borderRadius:5, borderWidth:3, backgroundColor:'#192734', color:'#fff', fontSize:15, alignItems:'center', justifyContent:'center'}}
+                    placeholder={Depth}
+                    placeholderTextColor="#fff"
+                    onChangeText={(text) => setDepth(text)}
+                    // value={id}
+                />
+            
+
             </View>
                 <View style={{alignContent:'center'}}>
                 <View style={{flexDirection:'row', alignSelf:'center', marginTop:10, alignItems:'center'}}>

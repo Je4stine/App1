@@ -3,6 +3,8 @@ import React from 'react';
 import { createStackNavigator, } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
 
 import SignUp from '../Components/Screens/SignUp';
 import Login from '../Components/Screens/Login';
@@ -13,11 +15,16 @@ import Devices from '../Components/Screens/Devices';
 import Sensors from '../Components/Screens/Sensors';
 import Graphs from '../Components/Screens/Graphs';
 
-const Stack = createStackNavigator();
+import Acount from '../Components/Screens/Acount';
 
-function RootNavigation() {
+const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+
+
+function StackNavigation() {
   return (
-    <NavigationContainer>
+    
       <Stack.Navigator >
         <Stack.Screen name="Login" component={Login} options={{headerShown:false}}/>
         <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
@@ -28,8 +35,21 @@ function RootNavigation() {
         <Stack.Screen name="Device" component={Devices} options={{headerShown:false}}/>
         <Stack.Screen name='Graphs' component={Graphs} options={{headerShown:false}}/>
       </Stack.Navigator>
-    </NavigationContainer>
+   
   );
+}
+
+
+
+function RootNavigation(){
+  return(
+    <NavigationContainer>
+    <Drawer.Navigator screenOptions={{headerShown:false}}>
+      <Drawer.Screen name='Home' component={StackNavigation}/>
+      <Drawer.Screen name='Acount' component={Acount}/>
+    </Drawer.Navigator>
+    </NavigationContainer>
+  )
 }
 
 export default RootNavigation;

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ToastAndroid, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ToastAndroid, ActivityIndicator, Keyboard } from 'react-native';
 import React,{useState,useEffect} from 'react';
 import { auth } from '../../Config';
 
@@ -6,32 +6,46 @@ import { auth } from '../../Config';
 const Login = ({navigation}) => {
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
-    const [loggedIn, setLoggedIn]= useState(false);
+    const [loading, isLoading]= useState(false);
+    const [loggedIn, setLoggedIn]=useState(false);
 
     const showToast = () => {
       ToastAndroid.show("Wrong password or user not registered !", ToastAndroid.LONG);
+      isLoading(false);
     };
 
-
-
+  
     useEffect(()=>{
       auth.onAuthStateChanged(user=>{
         if (user){
           navigation.navigate('Config');
-          setLoggedIn(true)
+          setLoggedIn(true);
         }
       })
     },[])
 
     const handleSignIn =()=>{
+      isLoading(true);
       auth
       .signInWithEmailAndPassword (email, password)
       .then(userCredentials=>{
         const user = userCredentials.user;
         console.log(user);
+        Keyboard.dismiss();
+        isLoading(false);
       })
       .catch (showToast)
     }
+
+    // handlelogin: async (email, password) => {
+    //   try {
+    //     setLoading(true);
+    //     await auth().signInWithEmailAndPassword(email, password);
+    //     setLoading(false);
+    //   } catch (e) {
+    //     alert(e);
+    //   }
+    // }
 
   return (
     <View style={{flex:1}}>
@@ -59,6 +73,7 @@ const Login = ({navigation}) => {
         <Text style={{color:"#fff", fontSize:20, fontWeight:'600', fontSize:18}}>Login</Text>
       </View>
       </TouchableOpacity>
+      <View>{!isLoading?(<ActivityIndicator/>):(<View></View>)}</View>
       <View style={{flexDirection:'row', justifyContent:'center', marginTop:30}}>
         <Text style={{fontSize:18}}>Don't have an account?</Text>
         <TouchableOpacity onPress={()=>navigation.navigate('SignUp')}>

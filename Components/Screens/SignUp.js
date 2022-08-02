@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import React,{useState} from 'react';
 import { auth } from '../../Config';
 
@@ -6,6 +6,7 @@ const SignUp = ({navigation}) => {
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
     const [confirmpwd, setConfirmpwd]= useState('');
+    const [loading, setLoading]=useState(false);
 
 const handleSignUp =()=>{
   auth
@@ -13,7 +14,8 @@ const handleSignUp =()=>{
   .then(userCredentials=>{
     const user = userCredentials.user;
     console.log(user);
-    navigation.navigate('Config')
+    navigation.navigate('Config');
+    setLoading(true);
   })
   .catch (error=>alert(error.message))
 }
@@ -51,7 +53,9 @@ const handleSignUp =()=>{
                     />
       <TouchableOpacity onPress={handleSignUp}>      
       <View style={{height:50, width:200, borderRadius:8, backgroundColor:'#4C9A2A',marginTop:10, alignItems:'center', justifyContent:'center'}}>
-        <Text style={{color:"#fff", fontSize:20, fontWeight:'600'}}>Sign Up</Text>
+        
+        {loading?(<ActivityIndicator/>):(  <Text style={{color:"#fff", fontSize:20, fontWeight:'600'}}>Sign Up</Text>)}
+      
       </View>
       </TouchableOpacity>
       <View style={{flexDirection:'row', justifyContent:'center', marginTop:30}}>

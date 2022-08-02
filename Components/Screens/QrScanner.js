@@ -6,6 +6,7 @@ const QrSanner = ({navigation}) =>  {
 
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [scanned, setScanned]=useState(false);
 
   useEffect(() => {
     (async () => {
@@ -20,15 +21,22 @@ const QrSanner = ({navigation}) =>  {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
+  const handleBarcdeScanned =({type, data})=>{
+    setScanned(true);
+    alert(`Qrcode with type ${data} has been scanned`)
+  };
+
   return(
   <View style={styles.container}>
       <Camera
-        onBarCodeScanned={(...args) => {
-          const data = args[0].data;
-          result = JSON.stringify(result);
-          console.log(result);
+        onBarCodeScanned={ scanned ? undefined : handleBarcdeScanned
+          // (...args) =>
+          // const data = args[0].data;
+          // result = JSON.stringify(result);
+          // console.log(result);
           // navigation.navigate('your_next_screen',{result});
-        }}
+        }
         barCodeScannerSettings={{
           barCodeTypes: ['qr'],
         }}
