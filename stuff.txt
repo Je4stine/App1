@@ -23,3 +23,11 @@
         </View> */}
          
        {/* </ScrollView> */}
+
+
+       {"SerialNumber":"94b555c72160",
+"GpsData":{"date_time":"2022/7/28 15:50:37","latitude":"0.00000 °N","longitude":"0.00000 °E","altitude":"0.00 m","speed":"0.000000 m/s","status":"-1"},
+"PhTramsmitter":{"address":"0B","phValue":"8.980000","status":"-1"},
+"TdsSensor":{"address":"33","conductivity":"1824 us/cm","temperature":"20.799999 °C","tds":"912 us/cm","status":"-1"},
+"Moisture":{"address":"03","conductivity":"1385 us/cm","temperature":"20 °C","moisture":"10 %","status":"-1"},
+"current_timestamp"

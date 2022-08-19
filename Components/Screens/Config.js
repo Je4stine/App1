@@ -2,42 +2,11 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import React, {useState, useContext} from 'react';
 import { Entypo } from '@expo/vector-icons';
 import {AppContext} from '../../AppContext';
+import { LinearGradient } from 'react-native-svg';
 
 
 
 const Config = ({navigation}) => {
-  // const {interval, setInterval}=useContext(AppContext);
-  // const {ph, setPh}=useContext(AppContext);
-  // const {moisture, setMoisture}=useContext(AppContext);
-
-
-
-
-  // const incrementInterval = ()=>{
-  //   setInterval (interval+1)
-  // };
-
-  // const decrementInterval = ()=>{
-  //   setInterval (interval-1)
-  // };
-
-  // const incrementPh = ()=>{
-  //   setPh (ph+1)
-  // };
-
-  // const decrementPh = ()=>{
-  //   setPh (ph-1)
-  // };
-
-
-  // const incrementMoisture = ()=>{
-  //   setMoisture (moisture+1)
-  // };
-
-  // const decrementMoisture = ()=>{
-  //   setMoisture (moisture-1)
-  // };
-
 
  
  

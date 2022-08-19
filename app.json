@@ -3,6 +3,7 @@
     "name": "Tawi1",
     "slug": "Tawi_edge",
     "version": "1.0.0",
+    "icon": "./Components/assets/icon1.png",
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -11,7 +12,7 @@
       "package": "com.je4stine.App1"
     },
     "splash": {
-      "image": "./Components/assets/logo1.png",
+      "image": "./Components/assets/logo2.png",
       "resizeMode": "contain"
     }
   }

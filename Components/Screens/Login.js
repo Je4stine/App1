@@ -1,6 +1,7 @@
-import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ToastAndroid, ActivityIndicator, Keyboard } from 'react-native';
+import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ToastAndroid, ActivityIndicator, Keyboard, StyleSheet } from 'react-native';
 import React,{useState,useEffect} from 'react';
 import { auth } from '../../Config';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 const Login = ({navigation}) => {
@@ -19,7 +20,7 @@ const Login = ({navigation}) => {
       auth.onAuthStateChanged(user=>{
         if (user){
           navigation.navigate('Config');
-          setLoggedIn(true);
+
         }
       })
     },[])
@@ -34,7 +35,8 @@ const Login = ({navigation}) => {
         Keyboard.dismiss();
         isLoading(false);
       })
-      .catch (showToast)
+      .catch (showToast);
+        isLoading(false);
     }
 
     // handlelogin: async (email, password) => {
@@ -73,7 +75,7 @@ const Login = ({navigation}) => {
         <Text style={{color:"#fff", fontSize:20, fontWeight:'600', fontSize:18}}>Login</Text>
       </View>
       </TouchableOpacity>
-      <View>{!isLoading?(<ActivityIndicator/>):(<View></View>)}</View>
+      <View>{!loading==true ?(<ActivityIndicator/>):(<View></View>)}</View>
       <View style={{flexDirection:'row', justifyContent:'center', marginTop:30}}>
         <Text style={{fontSize:18}}>Don't have an account?</Text>
         <TouchableOpacity onPress={()=>navigation.navigate('SignUp')}>
@@ -86,3 +88,9 @@ const Login = ({navigation}) => {
 }
 
 export default Login;
+
+const styles = StyleSheet.create ({
+  spinnerTextStyle: {
+    color: '#FFF'
+  }
+});

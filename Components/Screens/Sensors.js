@@ -1,11 +1,15 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet} from 'react-native'
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import SensorCard from './SensorCard';
 import { useNavigation } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Animated,{ Easing, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 const data = [
   { label: '5 sec', value: '5' },
@@ -20,10 +24,58 @@ const data = [
 
 
 
-export default function Sensors({DeviceID='Node ID: Pivot01a'}) {
+const Sensors =() =>{
   const navigation = useNavigation();
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [sensorData, setSensorData]=useState([]);
+  const [passer, setPasser]=useState([])
+
+
+  const getData =async()=>{
+    try {
+      const deviceData = await 
+      axios.get('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160')
+      setSensorData(deviceData.data);
+      
+    } catch(err){
+      console.log(err.message)
+    }
+  };
+
+  const store = async ()=>{
+    const user = await AsyncStorage.getItem("user");
+    var passer = JSON.parse(user);
+    setPasser(passer)
+  }
+
+  useEffect(()=>{
+      store();
+      getData();
+    
+
+      const interval = setInterval(() => {
+        getData()
+      }, 5000);
+
+      return ()=>clearInterval(interval)
+  });
+
+   
+  
+
+
+  // const getData = ()=>{
+  //   fetch ('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160')
+  //     .then((response)=>response.json())
+  //     .then((response)=>{
+  //       setSensorData(response);
+  //       //  console.log(sensorData.Moisture.moisture);
+  //     });
+  // };
+
+  
+  
 
   const renderLabel = () => {
   
@@ -36,23 +88,73 @@ export default function Sensors({DeviceID='Node ID: Pivot01a'}) {
     }
     return null;
   };
+
+  const lastContentOffset = useSharedValue(0);
+  const isScrolling = useSharedValue(false);
+  const translateY = useSharedValue(0);
+
+  const actionBarStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: withTiming(translateY.value, {
+            duration: 750,
+            easing: Easing.inOut(Easing.ease),
+          }),
+        },
+      ],
+    };
+  });
+
+    const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      if (
+        lastContentOffset.value > event.contentOffset.y &&
+        isScrolling.value
+      ) {
+        translateY.value = 0;
+        console.log("scrolling up");
+      } else if (
+        lastContentOffset.value < event.contentOffset.y &&
+        isScrolling.value
+      ) {
+        translateY.value = 100;
+        console.log("scrolling down");
+      }
+      lastContentOffset.value = event.contentOffset.y;
+    },
+    onBeginDrag: (e) => {
+      isScrolling.value = true;
+    },
+    onEndDrag: (e) => {
+      isScrolling.value = false;
+    },
+  });
+
  
   return (
     <View style={{flex:1, backgroundColor:"#192734"}}>
-    <View style={{backgroundColor:'#2A4156', height:80, width:'100%',marginTop:30, elevation:2, justifyContent:'center', padding:10}}>
-      <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>{DeviceID}</Text>
-    </View>
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <SensorCard/>
-        <SensorCard/>
-        <SensorCard/>
-        <SensorCard/>
+      <View style={{backgroundColor:'#2A4156', height:80, width:'100%',marginTop:30, elevation:2, justifyContent:'center', padding:10}}>
+        <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>{sensorData.SerialNumber}</Text>
+      </View>
+      <Animated.ScrollView 
+      scrollEventThrottle={16}
+      onScroll={scrollHandler}
+      // style={}
+        >
+          { sensorData.Moisture == null ? (<Text style={{color:'#fff'}}>Loading</Text>):
+              (<SensorCard moisture={sensorData.Moisture.moisture} ec={sensorData.Moisture.conductivity} temperature={sensorData.Moisture.temperature}/>)
+          }
+        
         <View style={{height:200}}></View>
-    </ScrollView>
+      </Animated.ScrollView>
 
-    <View style={{alignSelf:'center', position:'absolute', bottom:2, flex:1}}>
-        <View style={{height:40, width:350, borderColor:'green',  borderRadius:5,padding:10, marginBottom:5, backgroundColor:'green', alignSelf:'center',flexDirection:'row', justifyContent:'space-around', alignItems:'center', flex:1}}>
-          <Text style={{color:'#fff', fontSize:18}} >
+
+    <Animated.View style={[styles.containerView,actionBarStyle]}>
+    <LinearGradient
+            colors={['#42A341', '#074C00', '#074C00']}
+            style={{height:40, width:'90%',borderRadius:4, flexDirection:'row', alignItems:'center', justifyContent:'space-around', marginBottom:10, flex:1, alignSelf:'center'}}>
+                         <Text style={{color:'#fff', fontSize:18}} >
             Set Interval
           </Text>
             
@@ -81,23 +183,30 @@ export default function Sensors({DeviceID='Node ID: Pivot01a'}) {
               <Octicons name="triangle-down" size={24} color="#fff" />
             )}
         />
-            
-        </View>
+        </LinearGradient>
+
         <TouchableOpacity onPress={()=>navigation.navigate('Graphs')}>
-        <View style={{height:40, width:350, borderColor:'green', borderWidth:2, borderRadius:4, marginBottom:5, backgroundColor:'green', alignSelf:'center', alignItems:'center', justifyContent:'center', flexDirection:'row'}}>
+        <LinearGradient
+            colors={['#42A341', '#074C00', '#074C00']}
+            style={{height:40,width:'90%', borderRadius:4, flexDirection:'row', alignItems:'center', justifyContent:'center', marginBottom:10, alignSelf:'center'}}>            
             <Ionicons name="eye-sharp" size={24} color="blue" />
             <Text style={{fontSize:20, color:'#fff', alignSelf:'center', marginLeft:10}}>View Data</Text>
-        </View>
+        </LinearGradient>
+
         </TouchableOpacity>
-        <View style={{height:40, width:350, borderColor:'green', borderWidth:2, borderRadius:4, marginBottom:5, backgroundColor:'green', alignSelf:'center', flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
-          <MaterialIcons name="location-pin" size={24} color="red" />
+        <LinearGradient
+            colors={['#42A341', '#074C00', '#074C00']}
+            style={{height:40,width:'90%', borderRadius:4, flexDirection:'row', alignItems:'center', justifyContent:'center', alignSelf:'center', marginBottom:10}}>           
+            <MaterialIcons name="location-pin" size={24} color="red" />
             <Text style={{fontSize:20, color:'#fff', alignSelf:'center'}}> Node Location</Text>
-        </View>
-    </View>
+        </LinearGradient>
+       
+    </Animated.View>
   </View>
   );
 };
 
+export default Sensors;
 
 const styles = StyleSheet.create({
     container: {
@@ -141,4 +250,18 @@ const styles = StyleSheet.create({
       height: 40,
       fontSize: 16,
     },
+    containerView:{
+      alignSelf:'center', 
+      position:'absolute', 
+      bottom:0, 
+      flex:1
+    }
+    
   });
+
+
+
+
+ 
+  
+ 
