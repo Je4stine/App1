@@ -1,14 +1,13 @@
-import { View, Text, Image, TextInput } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import React,{useState} from 'react';
  
-const SensorCard=({
-    Depth="10cm",
-    moisture="0",
-    ec="0",
+const TDS=({
+    conductivity="0",
+    tds="0",
     temperature="0",
 
 })=> {
-    const [depth, setDepth]=useState();
+    
 
   return (
     <View style={{height:250, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2}}>
@@ -22,35 +21,26 @@ const SensorCard=({
                 </View>
                 </View>
                 <View>
-                    <Text style={{fontSize:20, color:'#fff', fontWeight:'bold'}}>Soil-01</Text>  
+                    <Text style={{fontSize:20, color:'#fff', fontWeight:'bold'}}>TDS sensor</Text>  
                 </View>
-                
-               
-                <TextInput
-                    style={{paddingLeft:10, height:30, width:'40%', borderColor:'green', borderRadius:5, borderWidth:3, backgroundColor:'#192734', color:'#fff', fontSize:15, alignItems:'center', justifyContent:'center'}}
-                    placeholder={Depth}
-                    placeholderTextColor="#fff"
-                    onChangeText={(text) => setDepth(text)}
-                    // value={id}
-                />
-            
+                 
 
             </View>
                 <View style={{alignContent:'center'}}>
                 <View style={{flexDirection:'row', alignSelf:'center', marginTop:10, alignItems:'center'}}>
-                    <Image source={require('../assets/water-drop-icon.png')} style={{height:30, width:20, marginRight:20}}/>
-                    <Text style={{color:'#fff', fontSize:20, marginRight:14}}>Moisture</Text>
+                    <Image source={require('../assets/water-drop-icon.png')} style={{height:30, width:20, marginRight:13}}/>
+                    <Text style={{color:'#fff', fontSize:20, marginRight:5}}>Conductivity</Text>
                     <View style={{ height:40, width:90, borderWidth:3, borderColor:'#87CEEB', backgroundColor:'#fff', borderRadius:5, marginRight:20}}>
-                        <Text style={{fontSize:30, alignSelf:'center', fontWeight:'bold'}}>{moisture}</Text>
+                        <Text style={{fontSize:30, alignSelf:'center', fontWeight:'bold'}}>{conductivity}</Text>
                     </View>
-                    <Text style={{color:'#fff', fontSize:30}}>%</Text>
+                    <Text style={{color:'#fff', fontSize:30}}>US</Text>
                 </View>
 
                 <View style={{flexDirection:'row', alignSelf:'center', marginTop:20, alignItems:'center', justifyContent:'center'}}>
                     <Image source={require('../assets/kind.png')} style={{height:30, width:30, marginRight:50}}/>
-                    <Text style={{color:'#fff', fontSize:20, marginRight:29}}>EC</Text>
+                    <Text style={{color:'#fff', fontSize:20, marginRight:29}}>TDS</Text>
                     <View style={{ height:40, width:90, borderWidth:3, borderColor:'green', backgroundColor:'#fff', borderRadius:5, marginRight:20}}>
-                        <Text style={{fontSize:30, alignSelf:'center', fontWeight:'bold'}}>{ec}</Text>
+                        <Text style={{fontSize:30, alignSelf:'center', fontWeight:'bold'}}>{tds}</Text>
                     </View>
                     <Text style={{color:'#fff', fontSize:30}}>US</Text>
                 </View>
@@ -69,4 +59,4 @@ const SensorCard=({
   );
 };
 
-export default SensorCard;
+export default TDS;

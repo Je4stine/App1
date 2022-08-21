@@ -3,13 +3,17 @@
     "name": "Tawi1",
     "slug": "Tawi_edge",
     "version": "1.0.0",
-    "icon": "./Components/assets/icon1.png",
+    "icon": "./Components/assets/icon3.png",
     "assetBundlePatterns": [
       "**/*"
     ],
-    "description": "",
+    "description": "This is the Tawi edge app",
     "android": {
-      "package": "com.je4stine.App1"
+      "package": "com.tawiai.tawiedge",
+      "adaptiveIcon":{
+        "backgroundColor": "#ffffff",
+        "foregroundColor": "./Components/assets/icon3.png"
+      }
     },
     "splash": {
       "image": "./Components/assets/logo2.png",

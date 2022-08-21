@@ -3,7 +3,7 @@ import React,{useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 const Devices=({
-    DeviceId="Pivot01a",
+    DeviceId="Loading...",
 }) =>{
     const navigation = useNavigation(); 
     const [id, setID]=useState(DeviceId);

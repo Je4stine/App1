@@ -12,12 +12,20 @@ const DashBoard=({navigation})=> {
   const [deviceData, setDeviceData]=useState([]);
  
   useEffect (()=>{
-    fetch ('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160')
+    fetch ('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160',{
+    headers :{
+      'Cache-Control':'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires':'0'
+    }
+  })
+     
       .then((response)=>response.json())
       .then((response)=>{
         // console.log(response);
         setDeviceData(response);
-        AsyncStorage.setItem("user", JSON.stringify(response));
+        console.log(response)
+      
       });
   },[]);
 //  fetch(url)

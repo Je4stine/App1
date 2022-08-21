@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet} from 'react-native'
 import React,{useState, useEffect} from 'react';
 import SensorCard from './SensorCard';
+import Phsensor from './Phsensor';
+import TDS from './TDS';
 import { useNavigation } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Octicons } from '@expo/vector-icons';
@@ -33,14 +35,20 @@ const Sensors =() =>{
 
 
   const getData =async()=>{
-    try {
-      const deviceData = await 
-      axios.get('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160')
-      setSensorData(deviceData.data);
-      
-    } catch(err){
-      console.log(err.message)
+    fetch ('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160',{
+    headers :{
+      'Cache-Control':'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires':'0'
     }
+  })
+     
+      .then((response)=>response.json())
+      .then((response)=>{
+        // console.log(response);
+        setSensorData(response);
+        console.log(response)
+      });
   };
 
   const store = async ()=>{
@@ -50,16 +58,17 @@ const Sensors =() =>{
   }
 
   useEffect(()=>{
-      store();
+
       getData();
     
-
+     
       const interval = setInterval(() => {
+        
         getData()
-      }, 5000);
+      }, 10000);
 
       return ()=>clearInterval(interval)
-  });
+  },[]);
 
    
   
@@ -142,10 +151,19 @@ const Sensors =() =>{
       onScroll={scrollHandler}
       // style={}
         >
-          { sensorData.Moisture == null ? (<Text style={{color:'#fff'}}>Loading</Text>):
+          { sensorData.Moisture == null ? (<Text style={{color:'#fff'}}>Loading...</Text>):
               (<SensorCard moisture={sensorData.Moisture.moisture} ec={sensorData.Moisture.conductivity} temperature={sensorData.Moisture.temperature}/>)
           }
-        
+
+          { sensorData.PhTramsmitter == null? (<Text style={{color:'#fff'}}> Loading...</Text>):
+             ( <Phsensor phValue={sensorData.PhTramsmitter.phValue}/>)
+          }
+          
+          {
+            sensorData.TdsSensor == null ? (<Text style={{color:'#fff'}}>Loading...</Text>):
+            (<TDS conductivity={sensorData.TdsSensor.conductivity } tds={sensorData.TdsSensor.tds} temperature={sensorData.TdsSensor.temperature}/>)
+          }
+
         <View style={{height:200}}></View>
       </Animated.ScrollView>
 
