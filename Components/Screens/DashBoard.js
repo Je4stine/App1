@@ -51,16 +51,18 @@ const DashBoard=({navigation})=> {
           <Ionicons name="menu" size={33} color="#fff" />
           </TouchableOpacity>
         </View>
+
         
         <Devices DeviceId={deviceData.SerialNumber}/>
         
         
-        
-        <LinearGradient  colors={['#42A341', '#074C00', '#074C00']} style={{height:50, width:'100%', position:'absolute',bottom:2,backgroundColor:'green', borderRadius:10, justifyContent:'center'}}>
+        <TouchableOpacity style={{flex:1}} onPress={()=>{navigation.navigate('Config')}}>
+        <LinearGradient  colors={['#42A341', '#074C00', '#074C00']} style={{height:50, width:'98%', position:'absolute',bottom:5,backgroundColor:'green', borderRadius:10, justifyContent:'center', alignSelf:"center"}}>
             <Text style={{alignSelf:'center',fontSize:25, fontWeight:'900',color:'#fff'}}>
               Link a New Node
             </Text>
           </LinearGradient>
+          </TouchableOpacity>
       </View>
     )
 };

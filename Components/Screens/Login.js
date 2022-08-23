@@ -2,6 +2,7 @@ import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ToastA
 import React,{useState,useEffect} from 'react';
 import { auth } from '../../Config';
 import Spinner from 'react-native-loading-spinner-overlay';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Login = ({navigation}) => {
@@ -23,31 +24,25 @@ const Login = ({navigation}) => {
 
         }
       })
-    },[])
+    },[]);
+
 
     const handleSignIn =()=>{
       isLoading(true);
+      Keyboard.dismiss();
       auth
       .signInWithEmailAndPassword (email, password)
       .then(userCredentials=>{
         const user = userCredentials.user;
         console.log(user);
-        Keyboard.dismiss();
         isLoading(false);
+        AsyncStorage.setItem("UserInfo", JSON.stringify(user));
+
       })
       .catch (showToast);
         isLoading(false);
     }
 
-    // handlelogin: async (email, password) => {
-    //   try {
-    //     setLoading(true);
-    //     await auth().signInWithEmailAndPassword(email, password);
-    //     setLoading(false);
-    //   } catch (e) {
-    //     alert(e);
-    //   }
-    // }
 
   return (
     <View style={{flex:1}}>
@@ -75,7 +70,7 @@ const Login = ({navigation}) => {
         <Text style={{color:"#fff", fontSize:20, fontWeight:'600', fontSize:18}}>Login</Text>
       </View>
       </TouchableOpacity>
-      <View>{!loading==true ?(<ActivityIndicator/>):(<View></View>)}</View>
+      <View>{loading==true ?(<ActivityIndicator/>):(<View></View>)}</View>
       <View style={{flexDirection:'row', justifyContent:'center', marginTop:30}}>
         <Text style={{fontSize:18}}>Don't have an account?</Text>
         <TouchableOpacity onPress={()=>navigation.navigate('SignUp')}>

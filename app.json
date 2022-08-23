@@ -9,11 +9,8 @@
     ],
     "description": "This is the Tawi edge app",
     "android": {
-      "package": "com.tawiai.tawiedge",
-      "adaptiveIcon":{
-        "backgroundColor": "#ffffff",
-        "foregroundColor": "./Components/assets/icon3.png"
-      }
+      "package": "com.tawiai.tawiedge"
+   
     },
     "splash": {
       "image": "./Components/assets/logo2.png",

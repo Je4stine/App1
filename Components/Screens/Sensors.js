@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet} from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator} from 'react-native'
 import React,{useState, useEffect} from 'react';
 import SensorCard from './SensorCard';
 import Phsensor from './Phsensor';
@@ -11,6 +11,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+import { useTheme } from '@react-navigation/native';
+
 import Animated,{ Easing, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 const data = [
@@ -144,23 +148,39 @@ const Sensors =() =>{
   return (
     <View style={{flex:1, backgroundColor:"#192734"}}>
       <View style={{backgroundColor:'#2A4156', height:80, width:'100%',marginTop:30, elevation:2, justifyContent:'center', padding:10}}>
-        <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>{sensorData.SerialNumber}</Text>
+        <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>Node ID:{sensorData.SerialNumber}</Text>
       </View>
       <Animated.ScrollView 
       scrollEventThrottle={16}
       onScroll={scrollHandler}
       // style={}
         >
-          { sensorData.Moisture == null ? (<Text style={{color:'#fff'}}>Loading...</Text>):
+
+
+          { sensorData.Moisture == null ? (
+            <View style={{marginTop:30, marginBottom:30}}>
+              <ActivityIndicator size="small" color="#42A341" />
+            </View>
+          
+          ):
               (<SensorCard moisture={sensorData.Moisture.moisture} ec={sensorData.Moisture.conductivity} temperature={sensorData.Moisture.temperature}/>)
           }
 
-          { sensorData.PhTramsmitter == null? (<Text style={{color:'#fff'}}> Loading...</Text>):
+          { sensorData.PhTramsmitter == null? (
+           <View style={{marginTop:30, marginBottom:30}}>
+           <ActivityIndicator size="small" color="#42A341" />
+         </View>
+         ):
              ( <Phsensor phValue={sensorData.PhTramsmitter.phValue}/>)
           }
           
           {
-            sensorData.TdsSensor == null ? (<Text style={{color:'#fff'}}>Loading...</Text>):
+            sensorData.TdsSensor == null ? (
+              <View style={{marginTop:30, marginBottom:30}}>
+              <ActivityIndicator size="small" color="#42A341" />
+            </View>
+            
+            ):
             (<TDS conductivity={sensorData.TdsSensor.conductivity } tds={sensorData.TdsSensor.tds} temperature={sensorData.TdsSensor.temperature}/>)
           }
 
