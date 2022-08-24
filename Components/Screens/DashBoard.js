@@ -1,18 +1,34 @@
 import { Text, View, Image, TouchableOpacity } from 'react-native';
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState, useContext} from 'react';
 import Devices from './Devices';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { AppContext } from '../../AppContext';
 
 
 
 const DashBoard=({navigation})=> {
+  const {qrcode, setQrcode}=useContext(AppContext)
+  
+  // console.log(qrcode)
+  
+
+
   const [deviceData, setDeviceData]=useState([]);
+  const baseUrl= 'https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/'
+  
+
+
+  const serialnumber = AsyncStorage.getItem('serialnumber');
  
   useEffect (()=>{
-    fetch ('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160',{
+  
+  // const serial = JSON.parse(serialnumber);
+    console.log(serialnumber._W)
+   
+
+    fetch (baseUrl+qrcode || serialnumber._W,{
     headers :{
       'Cache-Control':'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -28,15 +44,8 @@ const DashBoard=({navigation})=> {
       
       });
   },[]);
-//  fetch(url)
-//       .then((response) => response.json())
-//       .then((data) => {
-//         receideData.push(data) 
-//       })
-//       .then(()=>{
-//         loadData()
-//       });
-//     });
+
+
 
 
 

@@ -4,14 +4,10 @@ const AppContext = createContext();
 
 const AppProvider = (props) => {
   
-  const [interval, setInterval]=useState(0);
-  const [ph, setPh]=useState(0);
-  const [moisture, setMoisture]=useState(0);
-  const [info, setInfo]= useState('')
-  const [finalState, setFinalState] = useState([]);
- 
+  const [qrcode, setQrcode]=useState('');
+
   return (
-    <AppContext.Provider value={{finalState, setFinalState, interval, setInterval,ph,setPh, moisture, setMoisture, info,setInfo}}>
+    <AppContext.Provider value={{qrcode, setQrcode}}>
       {props.children}
     </AppContext.Provider>
   );

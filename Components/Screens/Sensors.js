@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator} from 'react-native'
-import React,{useState, useEffect} from 'react';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator, Platform, Linking} from 'react-native'
+import React,{useState, useEffect, useContext} from 'react';
 import SensorCard from './SensorCard';
 import Phsensor from './Phsensor';
 import TDS from './TDS';
@@ -11,6 +11,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {db} from '../../Config';
+import {collection,add,serverTimestamp, addDoc, Timestamp} from 'firebase/firestore';
+import {AppContext} from '../../AppContext';
 
 
 import { useTheme } from '@react-navigation/native';
@@ -35,11 +38,22 @@ const Sensors =() =>{
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [sensorData, setSensorData]=useState([]);
-  const [passer, setPasser]=useState([])
+  const [serialNo, setSerialNo]=useState('');
 
+  const {qrcode, setQrcode}=useContext(AppContext);
 
+  // const getLabel =async()=>{
+  //   const serialnumber = await AsyncStorage.getItem('serialnumber');
+  //   setSerialNo(serialnumber)
+  //   console.log(serialnumber);
+  // };
+
+  const baseUrl = 'https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/';
+  
+ 
   const getData =async()=>{
-    fetch ('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160',{
+    const serialnumber = await AsyncStorage.getItem('serialnumber');
+    fetch (baseUrl+serialnumber,{
     headers :{
       'Cache-Control':'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -51,21 +65,18 @@ const Sensors =() =>{
       .then((response)=>{
         // console.log(response);
         setSensorData(response);
-        console.log(response)
+        // console.log(response)
+        // console.log(serialnumber)
       });
+      
   };
 
-  const store = async ()=>{
-    const user = await AsyncStorage.getItem("user");
-    var passer = JSON.parse(user);
-    setPasser(passer)
-  }
+ 
 
   useEffect(()=>{
 
       getData();
-    
-     
+      // getLabel();
       const interval = setInterval(() => {
         
         getData()
@@ -74,19 +85,21 @@ const Sensors =() =>{
       return ()=>clearInterval(interval)
   },[]);
 
-   
-  
 
 
-  // const getData = ()=>{
-  //   fetch ('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160')
-  //     .then((response)=>response.json())
-  //     .then((response)=>{
-  //       setSensorData(response);
-  //       //  console.log(sensorData.Moisture.moisture);
-  //     });
-  // };
+  const handleLocation=()=>{
+    const lat = sensorData.GpsData.latitude;
+    const lrng = sensorData.GpsData.longitude;
+    const scheme = Platform.select({ios: 'maps: 0,0?q=', android: 'geo: 0,0?q='})
+    const latLng = `${lat}, ${lrng}`;
+    const lable = 'Custom Label';
+    const url =  Platform.select({
+      ios:`${scheme}${lable}@${latLng}`,
+      android:`${scheme}${latLng}(${lable})`
+    });
 
+    Linking.openURL(url);
+  }
   
   
 
@@ -232,12 +245,14 @@ const Sensors =() =>{
         </LinearGradient>
 
         </TouchableOpacity>
+        <TouchableOpacity onPress={handleLocation}>
         <LinearGradient
             colors={['#42A341', '#074C00', '#074C00']}
             style={{height:40,width:'90%', borderRadius:4, flexDirection:'row', alignItems:'center', justifyContent:'center', alignSelf:'center', marginBottom:10}}>           
             <MaterialIcons name="location-pin" size={24} color="red" />
             <Text style={{fontSize:20, color:'#fff', alignSelf:'center'}}> Node Location</Text>
         </LinearGradient>
+        </TouchableOpacity>
        
     </Animated.View>
   </View>

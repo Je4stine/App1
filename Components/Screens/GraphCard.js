@@ -1,31 +1,63 @@
 import { View, Text, Dimensions } from 'react-native';
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import {
     LineChart,
   } from "react-native-chart-kit";
+  
 
-const GraphCard = () => {
+const GraphCard = ({sensorname=''}) => {
+  const [sensorData, setSensorData]=useState('');
+
+  useEffect (()=>{
+    fetch ('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160',{
+    headers :{
+      'Cache-Control':'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires':'0'
+    }
+  })
+     
+      .then((response)=>response.json())
+      .then((response)=>{
+        // console.log(response);
+        setSensorData(response.Moisture.moisture);
+        console.log(response)
+      
+      });
+  },[]);
+
+
+
   return (
     <View style={{alignItems:'center'}}>
             <View>
-            <Text style={{fontSize:20, fontWeight:'900', color:'#fff'}}>Sensor Output</Text>
+            <Text style={{fontSize:20, fontWeight:'900', color:'#fff'}}>{sensorname}</Text>
             <LineChart
             data={{
-            labels: ["12:00pm", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm"],
+            labels: ["12", "1", "2", "3", "4", "5", "6","7","8","9","10","11",],
             datasets: [
                 {
                 data: [
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100
+                    100,
+                    80,
+                    95,
+                    100,
+                    100,
+                    100,
+                    65,
+                    90,
+                    50,
+                    70,
+                    40,
+                    100,
+
+
+                    
                 ]
                 }
             ]
             }}
-            width={Dimensions.get("window").width-10} // from react-native
+            width={Dimensions.get("window").width-10} 
             height={220}
             yAxisLabel=""
             yAxisSuffix=""

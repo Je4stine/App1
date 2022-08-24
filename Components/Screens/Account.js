@@ -1,8 +1,21 @@
 import { View, Text, Image, TouchableOpacity, TextInput, Alert} from 'react-native';
-import React from 'react';
+import React,{useState} from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { auth } from '../../Config';
 
 const Account = ({navigation}) => {
+  const [email, setEmail]=useState('');
+
+  const handleReset=(email)=>{
+    auth.sendPasswordResetEmail(email, null, auth)
+    .then(() => {
+      alert("reset email sent to " + email);
+  })
+  .catch(function (e) {
+      console.log(e);
+  });
+  }
+
   return (
     <View style={{flex:1, backgroundColor:"#192734"}}>
         <View style={{backgroundColor:'#2A4156', height:80, width:'100%',marginTop:30, elevation:2, justifyContent:'space-between',alignItems:'center', padding:10, flexDirection:'row', marginBottom:20}}>
@@ -25,10 +38,11 @@ const Account = ({navigation}) => {
           <TextInput
               style={{padding:9, height:40, width:'50%', borderColor:'#fff', borderWidth:0.5, borderRadius:4, marginTop:5, color:'#fff'}}
               placeholder='Enter Email address'
+              onChange={(text) => setEmail(text)}
           />
           
           <View style={{height:40, width:'30%', backgroundColor:'green', borderRadius:5, justifyContent:'center', alignItems:'center'}}>
-          <TouchableOpacity style={{width:'80%',}}>
+          <TouchableOpacity style={{width:'80%',}} onPress={handleReset}>
             <Text style={{color:'#fff', fontSize:20, alignSelf:'center'}}>Submit</Text>
           </TouchableOpacity>
           </View>

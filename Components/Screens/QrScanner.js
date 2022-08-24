@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppContext } from '../../AppContext';
 
 const QrSanner = ({navigation}) =>  {
 
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [scanned, setScanned]=useState(false);
-
+  const {qrcode, setQrcode}=useContext(AppContext)
+ 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -24,18 +27,17 @@ const QrSanner = ({navigation}) =>  {
 
   const handleBarcdeScanned =({type, data})=>{
     setScanned(true);
-    alert(`Qrcode with type ${data} has been scanned`)
+    alert(`Qrcode with type ${data} has been scanned`);
+    setQrcode(data);
+    console.log(data)
+    AsyncStorage.setItem("serialnumber", data.toString());
   };
 
   return(
   <View style={styles.container}>
       <Camera
         onBarCodeScanned={ scanned ? undefined : handleBarcdeScanned
-          // (...args) =>
-          // const data = args[0].data;
-          // result = JSON.stringify(result);
-          // console.log(result);
-          // navigation.navigate('your_next_screen',{result});
+        
         }
         barCodeScannerSettings={{
           barCodeTypes: ['qr'],
