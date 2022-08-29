@@ -20,7 +20,7 @@ const Devices=({
             <Text style={{fontSize:18, color:'#fff', fontWeight:'bold'}}>Node ID: </Text>
         </View>
           <TextInput
-          style={{padding:10, height:40, width:'40%', borderColor:'green', borderRadius:5, borderWidth:3, backgroundColor:'#192734', color:'#fff', fontSize:18}}
+          style={{padding:10, height:40, width:'40%', borderColor:'green', borderRadius:5, borderWidth:3, backgroundColor:'#192734', color:'#fff', fontSize:15}}
           placeholder={DeviceId}
           placeholderTextColor="#fff"
           onChangeText={(text) => setID(text)}

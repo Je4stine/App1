@@ -181,7 +181,7 @@ const Sensors =() =>{
 
           { sensorData.PhTramsmitter == null? (
            <View style={{marginTop:30, marginBottom:30}}>
-           <ActivityIndicator size="small" color="#42A341" />
+           {/* <ActivityIndicator size="small" color="#42A341" /> */}
          </View>
          ):
              ( <Phsensor phValue={sensorData.PhTramsmitter.phValue}/>)
@@ -190,7 +190,7 @@ const Sensors =() =>{
           {
             sensorData.TdsSensor == null ? (
               <View style={{marginTop:30, marginBottom:30}}>
-              <ActivityIndicator size="small" color="#42A341" />
+              {/* <ActivityIndicator size="small" color="#42A341" /> */}
             </View>
             
             ):

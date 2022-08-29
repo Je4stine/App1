@@ -1,28 +1,32 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getTodo = /* GraphQL */ `
-  query GetTodo($id: ID!) {
-    getTodo(id: $id) {
+export const getAppData = /* GraphQL */ `
+  query GetAppData($id: ID!) {
+    getAppData(id: $id) {
       id
-      name
-      description
+      qrcode
+      baseurl
+      alias
+      createdBy
       createdAt
       updatedAt
     }
   }
 `;
-export const listTodos = /* GraphQL */ `
-  query ListTodos(
-    $filter: ModelTodoFilterInput
+export const listAppData = /* GraphQL */ `
+  query ListAppData(
+    $filter: ModelAppDataFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listAppData(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
-        description
+        qrcode
+        baseurl
+        alias
+        createdBy
         createdAt
         updatedAt
       }

@@ -1,19 +1,30 @@
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
 import React,{useEffect, useState, useContext} from 'react';
 import Devices from './Devices';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppContext } from '../../AppContext';
+import {API, graphqlOperation} from 'aws-amplify';
+import * as queries from '../../src/graphql/queries';
 
 
 
 const DashBoard=({navigation})=> {
-  const {qrcode, setQrcode}=useContext(AppContext)
+  const {qrcode, setQrcode}=useContext(AppContext);
+  const [data, setData]=useState([]);
   
   // console.log(qrcode)
   
-
+  async function fetchAllData(){
+    try{
+      const {data} = await API.graphql(graphqlOperation(queries.listAppData));
+      setData(data.listAppData.items)
+      
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   const [deviceData, setDeviceData]=useState([]);
   const baseUrl= 'https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/'
@@ -24,11 +35,12 @@ const DashBoard=({navigation})=> {
  
   useEffect (()=>{
   
-  // const serial = JSON.parse(serialnumber);
-    console.log(serialnumber._W)
+  fetchAllData();
+  console.log(data.qrcode)
+
    
 
-    fetch (baseUrl+qrcode || serialnumber._W,{
+    fetch (baseUrl+data, {
     headers :{
       'Cache-Control':'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -40,7 +52,8 @@ const DashBoard=({navigation})=> {
       .then((response)=>{
         // console.log(response);
         setDeviceData(response);
-        console.log(response)
+        console.log(response);
+        console.log(data.item.qrcode);
       
       });
   },[]);
@@ -63,6 +76,11 @@ const DashBoard=({navigation})=> {
 
         
         <Devices DeviceId={deviceData.SerialNumber}/>
+
+      
+
+
+
         
         
         <TouchableOpacity style={{flex:1}} onPress={()=>{navigation.navigate('Config')}}>

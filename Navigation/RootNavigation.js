@@ -28,7 +28,7 @@ function StackNavigation() {
   return (
       <Stack.Navigator >
          <Stack.Screen name="Login" component={Login} options={{headerShown:false}}/>
-         <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
+         <Stack.Screen name="SignUp" component={Config} options={{headerShown:false}}/>
          <Stack.Screen name="Config" component={Config} options={{headerShown:false}}/>
         <Stack.Screen name="DashBoard" component={DashBoard} options={{headerShown:false}}/>
         <Stack.Screen name="Qr" component={QrScanner} options={{headerShown:false}}/>

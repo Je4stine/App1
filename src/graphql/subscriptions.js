@@ -1,34 +1,40 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateTodo = /* GraphQL */ `
-  subscription OnCreateTodo($filter: ModelSubscriptionTodoFilterInput) {
-    onCreateTodo(filter: $filter) {
+export const onCreateAppData = /* GraphQL */ `
+  subscription OnCreateAppData($filter: ModelSubscriptionAppDataFilterInput) {
+    onCreateAppData(filter: $filter) {
       id
-      name
-      description
+      qrcode
+      baseurl
+      alias
+      createdBy
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateTodo = /* GraphQL */ `
-  subscription OnUpdateTodo($filter: ModelSubscriptionTodoFilterInput) {
-    onUpdateTodo(filter: $filter) {
+export const onUpdateAppData = /* GraphQL */ `
+  subscription OnUpdateAppData($filter: ModelSubscriptionAppDataFilterInput) {
+    onUpdateAppData(filter: $filter) {
       id
-      name
-      description
+      qrcode
+      baseurl
+      alias
+      createdBy
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteTodo = /* GraphQL */ `
-  subscription OnDeleteTodo($filter: ModelSubscriptionTodoFilterInput) {
-    onDeleteTodo(filter: $filter) {
+export const onDeleteAppData = /* GraphQL */ `
+  subscription OnDeleteAppData($filter: ModelSubscriptionAppDataFilterInput) {
+    onDeleteAppData(filter: $filter) {
       id
-      name
-      description
+      qrcode
+      baseurl
+      alias
+      createdBy
       createdAt
       updatedAt
     }

@@ -26,30 +26,43 @@ const TDS=({
                  
 
             </View>
+
                 <View style={{alignContent:'center'}}>
-                <View style={{flexDirection:'row', alignSelf:'center', marginTop:10, alignItems:'center'}}>
-                    <Image source={require('../assets/water-drop-icon.png')} style={{height:30, width:20, marginRight:13}}/>
-                    <Text style={{color:'#fff', fontSize:20, marginRight:5}}>Conductivity</Text>
-                    <View style={{ height:40, width:90, borderWidth:3, borderColor:'#87CEEB', backgroundColor:'#fff', borderRadius:5, marginRight:20}}>
-                        <Text style={{fontSize:30, alignSelf:'center', fontWeight:'bold'}}>{conductivity}</Text>
+                <View style={{flexDirection:'row', justifyContent:'space-around',alignItems:'center',width:'100%'}}>
+                        <Image source={require('../assets/water-drop-icon.png')} style={{height:31, width:20}}/>
+                        <View>
+                            <Text style={{color:'#fff', fontSize:18}}>Conductivity</Text>
+                        </View>
+                        <View style={{ height:40, width:90, borderWidth:3, borderColor:'#87CEEB', backgroundColor:'#fff', borderRadius:5, marginRight:20, alignItems:'center', justifyContent:'center'}}>
+                        <Text style={{fontSize:25, alignSelf:'center', fontWeight:'bold'}}>{conductivity}</Text>
+
+                        </View>
+                        <Text style={{color:'#fff', fontSize:30}}>%</Text>
+                    </View>
+
+
+
+                <View style={{flexDirection:'row',width:'100%',marginTop:20, alignItems:'center', justifyContent:'space-around'}}>
+                    <View>
+                    <Image source={require('../assets/kind.png')} style={{height:30, width:30}}/>
+                    </View>
+                    <View>
+                    <Text style={{color:'#fff', fontSize:18, marginRight:55}}>EC</Text>
+                    </View>
+                    <View style={{ height:40, width:90, borderWidth:3, borderColor:'green', backgroundColor:'#fff', borderRadius:5, marginRight:20, alignItems:'center', justifyContent:'center'}}>
+                        <Text style={{fontSize:20, alignSelf:'center', fontWeight:'bold'}}>{tds}</Text>
                     </View>
                     <Text style={{color:'#fff', fontSize:30}}>US</Text>
                 </View>
 
-                <View style={{flexDirection:'row', alignSelf:'center', marginTop:20, alignItems:'center', justifyContent:'center'}}>
-                    <Image source={require('../assets/kind.png')} style={{height:30, width:30, marginRight:50}}/>
-                    <Text style={{color:'#fff', fontSize:20, marginRight:29}}>TDS</Text>
-                    <View style={{ height:40, width:90, borderWidth:3, borderColor:'green', backgroundColor:'#fff', borderRadius:5, marginRight:20}}>
-                        <Text style={{fontSize:30, alignSelf:'center', fontWeight:'bold'}}>{tds}</Text>
-                    </View>
-                    <Text style={{color:'#fff', fontSize:30}}>US</Text>
-                </View>
 
-                <View style={{flexDirection:'row', alignSelf:'center', marginTop:20, alignItems:'center', justifyContent:'center'}}>
+
+
+                <View style={{flexDirection:'row', width:'85%',alignSelf:'center', marginTop:20, alignItems:'center', justifyContent:'space-around'}}>
                     <Image source={require('../assets/thermometer.png')} style={{height:30, width:20,}}/>
-                    <Text style={{color:'#fff', fontSize:20, marginRight:5}}>Temperature</Text>
-                    <View style={{ height:40, width:90, borderWidth:3, borderColor:'red', backgroundColor:'#fff', borderRadius:5, marginRight:20}}>
-                        <Text style={{fontSize:30, alignSelf:'center', fontWeight:'bold'}}>{temperature}</Text>
+                    <Text style={{color:'#fff', fontSize:18}}>Temperature</Text>
+                    <View style={{ height:40, width:90, borderWidth:3, borderColor:'red', backgroundColor:'#fff', borderRadius:5, marginRight:20, alignContent:'center', justifyContent:'center'}}>
+                        <Text style={{fontSize:20, alignSelf:'center', fontWeight:'bold'}}>{temperature}</Text>
                     </View>
                     <Text style={{color:'#fff', fontSize:30}}>C</Text>
                 </View>

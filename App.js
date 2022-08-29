@@ -8,6 +8,10 @@ import DashBoard from './Components/Screens/DashBoard';
 import RootNavigation from './Navigation/RootNavigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppProvider } from './AppContext';
+import { Amplify } from 'aws-amplify'
+import awsconfig from './src/aws-exports'
+Amplify.configure(awsconfig)
+
 
 export default function App() {
   return (
