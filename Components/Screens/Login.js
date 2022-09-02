@@ -89,7 +89,7 @@ const Login = ({navigation}) => {
 
       <View style={{flexDirection:'row', justifyContent:'center', marginTop:30}}>
         <Text style={{fontSize:17}}>Forgot password</Text>
-        <TouchableOpacity onPress={()=>navigation.navigate('Reset')}>
+        <TouchableOpacity onPress={()=>navigation.navigate('Forgot')}>
         <Text style={{color:'#4C9A2A', fontSize:17}}>{" "}Reset</Text>
         </TouchableOpacity>
       </View>

@@ -1,10 +1,22 @@
 import { View, Text, Image, TouchableOpacity, TextInput, Alert} from 'react-native';
 import React,{useState} from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { auth } from '../../Config';
+import {Auth} from 'aws-amplify';
 
-const Account = ({navigation}) => {
-  const [email, setEmail]=useState('');
+const Account =  ({navigation}) => {
+  const [formState, setFormState]=useState({});
+
+
+  const handleReset =async()=>{
+    await Auth.currentAuthenticatedUser()
+    
+    .then(user => {
+        return Auth.changePassword(user, formState.oldPassword, formState.newPassword);
+    })
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+  }
+
 
   
 
@@ -20,21 +32,27 @@ const Account = ({navigation}) => {
             </TouchableOpacity>
         </View>
 
-        <View style={{height:80, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2, padding:10, flexDirection:'row', alignItems:'center'}}>
+        <View style={{height:80, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2, padding:10, alignItems:'center'}}>
         <Ionicons name="person" size={33} color="#fff" />
-          <Text style={{color:'#fff', marginLeft:20, fontSize:20}}> johndoe@gmail.com</Text>
+          <Text style={{color:'#fff', marginLeft:20, fontSize:20}}> Johndoe@gmail.com</Text>
         </View>
-        <View style={{height:80, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2, padding:10}}>
+        <View style={{height:200, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2, padding:10, alignItems:'center', justifyContent:'center'}}>
           <Text style={{color:'#fff', fontSize:15}}> Reset Password</Text>
-          <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+          <View style={{alignItems:'center'}}>
           <TextInput
-              style={{padding:9, height:40, width:'50%', borderColor:'#fff', borderWidth:0.5, borderRadius:4, marginTop:5, color:'#fff'}}
-              placeholder='Enter Email address'
-              onChange={(text) => setEmail(text)}
+              style={{padding:9, height:40, width:300, borderColor:'#fff', borderWidth:0.5, borderRadius:4, marginTop:10, color:'#fff'}}
+              placeholder='Old Password'
+              onChange={(text) => setFormState({...formState, oldPassword: text})}
           />
+
+          <TextInput
+              style={{padding:9, height:40, width:300, borderColor:'#fff', borderWidth:0.5, borderRadius:4, marginTop:10, color:'#fff'}}
+              placeholder='New Password'
+              onChange={(text) => setFormState({...formState, newPassword: text})}
+            />
           
-          <View style={{height:40, width:'30%', backgroundColor:'green', borderRadius:5, justifyContent:'center', alignItems:'center'}}>
-          <TouchableOpacity style={{width:'80%',}} >
+          <View style={{height:40, width:100, backgroundColor:'green', borderRadius:5, justifyContent:'center', alignItems:'center', marginTop:20}}>
+          <TouchableOpacity style={{width:'80%', }}  onPress={handleReset}>
             <Text style={{color:'#fff', fontSize:20, alignSelf:'center'}}>Submit</Text>
           </TouchableOpacity>
           </View>

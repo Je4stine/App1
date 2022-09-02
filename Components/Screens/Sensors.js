@@ -9,11 +9,10 @@ import { Octicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {db} from '../../Config';
-import {collection,add,serverTimestamp, addDoc, Timestamp} from 'firebase/firestore';
 import {AppContext} from '../../AppContext';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+
 
 
 import { useTheme } from '@react-navigation/native';
@@ -39,6 +38,11 @@ const Sensors =({route}) =>{
   const [isFocus, setIsFocus] = useState(false);
   const [sensorData, setSensorData]=useState([]);
   const [serialNo, setSerialNo]=useState('');
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  
 
   const {qrcode, setQrcode}=useContext(AppContext);
   const {snNumber}= route.params;

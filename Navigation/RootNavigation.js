@@ -21,6 +21,9 @@ import Sensors from '../Components/Screens/Sensors';
 import Graphs from '../Components/Screens/Graphs';
 import Reset from '../Components/Screens/Reset';
 import SignOut from '../Components/Screens/SignOut';
+import ForgotPassword from '../Components/Screens/ForgotPassword';
+import Verify from '../Components/Screens/Verify';
+import NewPassword from '../Components/Screens/NewPassword';
 
 import Account from '../Components/Screens/Account';
 
@@ -33,6 +36,7 @@ function AuthStackScreen (){
   <AuthStack.Navigator>
         <AuthStack.Screen name='Login' component={Login} options={{headerShown:false}}/>
         <AuthStack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
+ 
         <AuthStack.Screen name="Qr" component={QrScanner} options={{headerShown:false}}/>
         <AuthStack.Screen name="DashBoard" component={DashBoard} options={{headerShown:false}}/>
         <AuthStack.Screen name = 'Home'component={RootNavigation} options={{headerShown:false}}/>
@@ -99,6 +103,9 @@ function RootNavigation(){
         <AuthStack.Screen name='Login' component={Login} options={{headerShown:false}}/>
         <AuthStack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
         <AuthStack.Screen name="Qr" component={QrScanner} options={{headerShown:false}}/>
+        <AuthStack.Screen name="Verify" component={Verify} options={{headerShown:false}}/>
+        <AuthStack.Screen name="Forgot" component={ForgotPassword} options={{headerShown:false}}/>
+        <AuthStack.Screen name="NewPass" component={NewPassword} options={{headerShown:false}}/>
         <AuthStack.Screen name="DashBoard" component={DashBoard} options={{headerShown:false}}/>
         <AuthStack.Screen name = 'Home'component={RootNavigation} options={{headerShown:false}}/>
         </AuthStack.Navigator>

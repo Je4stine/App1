@@ -28,7 +28,7 @@ async function signUp() {
           }
       });
       setLoading(false);
-      navigation.navigate('Qr');
+      navigation.navigate('Verify');
 
   } catch (e) {
       Alert.alert('Oops', e.message)
@@ -44,7 +44,6 @@ const handleSignUp =()=>{
   }
  
 };
-
 
 
   return (

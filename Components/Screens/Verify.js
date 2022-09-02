@@ -8,23 +8,29 @@ import { Auth } from 'aws-amplify';
 
 
 
-const ForgotPassword = ({navigation}) => {
+const Verify = ({navigation}) => {
     const [loading, setLoading]= useState(false);
-    const {user, setUser, signedIn, setSignedIn, setUseremail}=useContext(AppContext);
     const [formState, setFormState]=useState({});
 
     const showToast = () => {
-      ToastAndroid.show("A reset code has been sent to your email address", ToastAndroid.LONG);
+      ToastAndroid.show("Wrong password or user not registered !", ToastAndroid.LONG);
       setLoading(false);
     };
 
 
-    const onSendPressed = async () => {
-       const {username}=formState;
+    const onConfirmPressed = async () => {
         try {
-          await Auth.forgotPassword(formState.username);
-          showToast();
-          navigation.navigate('NewPass');
+          await Auth.confirmSignUp(formState.username, formState.code);
+          navigation.navigate('Qr');
+        } catch (e) {
+          Alert.alert('Oops', e.message);
+        }
+      };
+
+      const onResendPress = async () => {
+        try {
+          await Auth.resendSignUp(formState.username);
+          Alert.alert('Success', 'Code was resent to your email');
         } catch (e) {
           Alert.alert('Oops', e.message);
         }
@@ -32,20 +38,16 @@ const ForgotPassword = ({navigation}) => {
 
   
     const handleSubmit =()=>{
-     onSendPressed();
+     onConfirmPressed();
+     
     }
       
 
   return (
     <View style={{flex:1}}>
-        <Spinner
-          visible={loading}
-          textContent={'Please wait...'}
-          textStyle={styles.spinnerTextStyle}
-        />
       <ImageBackground source={require('../assets/background.jpg')} resizeMode="cover" style={{ flex: 1,justifyContent: "center", alignItems:'center',}}>
         <Image source={require('../assets/logo.png')}/>
-      <Text style={{color:'#4C9A2A', fontWeight:'bold', marginBottom:40, marginTop:20, fontSize:30, alignSelf:'center'}}> Rest Password </Text>
+      <Text style={{color:'#4C9A2A', fontWeight:'bold', marginBottom:40, marginTop:20, fontSize:32, alignSelf:'center'}}> Confirm sign up </Text>
       <Text style={{color:'#4C9A2A', fontWeight:'bold', marginTop:10, padding:20, fontSize:18}}>Email</Text>
       <TextInput
             style={{padding:10, height:50, width:'80%', borderColor:'black', borderRadius:5, borderWidth:1,backgroundColor:"#fff"}}
@@ -53,7 +55,14 @@ const ForgotPassword = ({navigation}) => {
             onChangeText={(text) => setFormState({...formState, username: text})}
             value={formState.username}
             />
-    
+        <Text style={{color:'#4C9A2A', fontWeight:'bold', marginTop:10, padding:20, fontSize:18}}>Code</Text>
+            <TextInput
+                    style={{padding:10, height:50, width:'80%', borderColor:'black', borderRadius:5, borderWidth:1,backgroundColor:"#fff"}}
+                    placeholder="Code"
+                    onChangeText={(text) => setFormState({...formState, code: text})}
+                    value={formState.code}
+                    />
+            
 
       <TouchableOpacity onPress={handleSubmit}>
        
@@ -61,7 +70,13 @@ const ForgotPassword = ({navigation}) => {
         <Text style={{color:"#fff", fontSize:20, fontWeight:'600', fontSize:18}}> Submit</Text>
       </View>
       </TouchableOpacity>
-     
+
+      <View style={{flexDirection:'row', justifyContent:'center', marginTop:30}}>
+        <Text style={{fontSize:17}}>Didn't receive a code? </Text>
+        <TouchableOpacity onPress={onResendPress}>
+        <Text style={{color:'#4C9A2A', fontSize:17}}>{" "}Resend</Text>
+        </TouchableOpacity>
+      </View>
 
       
       </ImageBackground>
@@ -69,7 +84,7 @@ const ForgotPassword = ({navigation}) => {
   )
 };
 
-export default ForgotPassword;
+export default Verify;
 
 const styles = StyleSheet.create ({
   spinnerTextStyle: {
