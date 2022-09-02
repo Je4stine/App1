@@ -1,8 +1,9 @@
-import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ActivityIndicator, Keyboard } from 'react-native';
+import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ActivityIndicator, Keyboard, Alert, StyleSheet } from 'react-native';
 import React,{useState, useContext} from 'react';
 import { auth } from '../../Config';
 import { Auth } from 'aws-amplify';
 import { AppContext } from '../../AppContext';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const SignUp = ({navigation}) => {
   const [loading, setLoading]=useState(false);
@@ -26,10 +27,12 @@ async function signUp() {
               // other custom attributes 
           }
       });
-      navigation.navigate('Qr')
-  } catch (error) {
-      console.log('error signing up:', error);
-      alert(error)
+      setLoading(false);
+      navigation.navigate('Qr');
+
+  } catch (e) {
+      Alert.alert('Oops', e.message)
+      setLoading(false)
   }
 };
 
@@ -46,7 +49,12 @@ const handleSignUp =()=>{
 
   return (
     <View style={{flex:1}}>
-      <ImageBackground source={require('../assets/background.jpg')} resizeMode="cover" style={{ flex: 1,justifyContent: "center", alignItems:'center',}}>
+          <Spinner
+          visible={loading}
+          textContent={'Please wait...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      <ImageBackground source={require('../assets/background.jpg')} resizeMode="cover" style={{ flex: 1,justifyContent: "center", alignItems:'center'}}>
         <Image source={require('../assets/logo.png')}/>
       <Text style={{color:'#4C9A2A', fontWeight:'bold', marginBottom:40, marginTop:20, fontSize:30, alignSelf:'center'}}> Hello! Create an account </Text>
       
@@ -95,3 +103,9 @@ const handleSignUp =()=>{
 }
 
 export default SignUp;
+
+const styles = StyleSheet.create ({
+  spinnerTextStyle: {
+    color: '#FFF'
+  }
+});

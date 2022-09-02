@@ -6,12 +6,13 @@ const SensorCard=({
     moisture="0",
     ec="0",
     temperature="0",
+    datetime="0"
 
 })=> {
     const [depth, setDepth]=useState();
 
   return (
-    <View style={{height:250, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2}}>
+    <View style={{height:310, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2}}>
             <View style={{width:'90%', height:55, borderColor:'#fff', borderWidth:3, borderRadius:12, alignSelf:'center', padding:10, flexDirection:'row', justifyContent:'space-around', alignItems:'center', backgroundColor:'#2A4156', marginBottom:10, marginTop:10}}>
                 <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
                 <View style={{height:10, width:10, borderRadius:5, backgroundColor:'green', marginRight:5}}>
@@ -24,19 +25,12 @@ const SensorCard=({
                 <View>
                     <Text style={{fontSize:18, color:'#fff', fontWeight:'bold', alignSelf:'center'}}>Soil-01</Text>  
                 </View>
-                
-               
-                <TextInput
-                    style={{paddingLeft:10, height:30, width:'40%', borderColor:'green', borderRadius:5, borderWidth:3, backgroundColor:'#192734', color:'#fff', fontSize:15, alignItems:'center', justifyContent:'center'}}
-                    placeholder={Depth}
-                    placeholderTextColor="#fff"
-                    onChangeText={(text) => setDepth(text)}
-                    // value={id}
-                />
             
+                <View style={{paddingLeft:10, height:30, width:'40%', borderColor:'green', borderRadius: 5, borderWidth:3, backgroundColor:'#192734', alignItems:'center', justifyContent:'center'}}><Text style={{color:'#fff', fontSize:15,}}>{Depth}</Text></View>
+                    
+
 
             </View>
-
 
                 <View style={{alignItems:'center', justifyContent:'center'}}>
 
@@ -46,7 +40,7 @@ const SensorCard=({
                             <Text style={{color:'#fff', fontSize:18}}>Moisture</Text>
                         </View>
                         <View style={{ height:40, width:90, borderWidth:3, borderColor:'#87CEEB', backgroundColor:'#fff', borderRadius:5, marginRight:20, alignItems:'center', justifyContent:'center'}}>
-                        <Text style={{fontSize:25, alignSelf:'center', fontWeight:'bold'}}>{ec}</Text>
+                        <Text style={{fontSize:25, alignSelf:'center', fontWeight:'bold'}}>{moisture}</Text>
 
                         </View>
                         <Text style={{color:'#fff', fontSize:30}}>%</Text>
@@ -76,6 +70,9 @@ const SensorCard=({
                         <Text style={{fontSize:25, alignSelf:'center', fontWeight:'bold'}}>{temperature}</Text>
                     </View>
                     <Text style={{color:'#fff', fontSize:30}}>C</Text>
+                </View>
+                <View style={{height:35, width:'50%', borderWidth:2, borderColor:'#fff', borderRadius:5, justifyContent:'flex-end', marginTop:20, }}>
+                <Text style={{fontSize:25, alignSelf:'center', fontWeight:'bold'}}>{datetime}</Text>    
                 </View>
                 </View>
         </View> 

@@ -2,11 +2,9 @@
 // this is an auto generated file. This will be overwritten
 
 export const getAppData = /* GraphQL */ `
-  query GetAppData($id: ID!) {
-    getAppData(id: $id) {
-      id
+  query GetAppData($qrcode: String!) {
+    getAppData(qrcode: $qrcode) {
       qrcode
-      baseurl
       alias
       createdBy
       createdAt
@@ -16,15 +14,21 @@ export const getAppData = /* GraphQL */ `
 `;
 export const listAppData = /* GraphQL */ `
   query ListAppData(
+    $qrcode: String
     $filter: ModelAppDataFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listAppData(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listAppData(
+      qrcode: $qrcode
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
-        id
         qrcode
-        baseurl
         alias
         createdBy
         createdAt

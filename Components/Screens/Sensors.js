@@ -33,7 +33,7 @@ const data = [
 
 
 
-const Sensors =() =>{
+const Sensors =({route}) =>{
   const navigation = useNavigation();
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -41,6 +41,7 @@ const Sensors =() =>{
   const [serialNo, setSerialNo]=useState('');
 
   const {qrcode, setQrcode}=useContext(AppContext);
+  const {snNumber}= route.params;
 
   // const getLabel =async()=>{
   //   const serialnumber = await AsyncStorage.getItem('serialnumber');
@@ -52,8 +53,7 @@ const Sensors =() =>{
   
  
   const getData =async()=>{
-    const serialnumber = await AsyncStorage.getItem('serialnumber');
-    fetch (baseUrl+serialnumber,{
+    fetch (baseUrl+snNumber,{
     headers :{
       'Cache-Control':'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -80,7 +80,7 @@ const Sensors =() =>{
       const interval = setInterval(() => {
         
         getData()
-      }, 10000);
+      }, 1000000);
 
       return ()=>clearInterval(interval)
   },[]);
@@ -92,7 +92,7 @@ const Sensors =() =>{
     const lrng = sensorData.GpsData.longitude;
     const scheme = Platform.select({ios: 'maps: 0,0?q=', android: 'geo: 0,0?q='})
     const latLng = `${lat}, ${lrng}`;
-    const lable = 'Custom Label';
+    const lable = {snNumber};
     const url =  Platform.select({
       ios:`${scheme}${lable}@${latLng}`,
       android:`${scheme}${latLng}(${lable})`
@@ -161,7 +161,7 @@ const Sensors =() =>{
   return (
     <View style={{flex:1, backgroundColor:"#192734"}}>
       <View style={{backgroundColor:'#2A4156', height:80, width:'100%',marginTop:30, elevation:2, justifyContent:'center', padding:10}}>
-        <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>Node ID:{sensorData.SerialNumber}</Text>
+        <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>Node ID:{" "}{snNumber}</Text>
       </View>
       <Animated.ScrollView 
       scrollEventThrottle={16}

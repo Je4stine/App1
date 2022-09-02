@@ -17,9 +17,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <AppProvider>
-        <NavigationContainer>
+        
          <RootNavigation/>
-        </NavigationContainer>
+        
        </AppProvider>
       <StatusBar style='light'/>
     </View>

@@ -4,11 +4,12 @@ const AppContext = createContext();
 
 const AppProvider = (props) => {
   
-  const [qrcode, setQrcode]=useState('');
   const [useremail, setUseremail]=useState('');
+  const [user, setUser]=useState([]);
+  const [signedIn, setSignedIn]=useState(false);
 
   return (
-    <AppContext.Provider value={{qrcode, setQrcode, useremail, setUseremail}}>
+    <AppContext.Provider value={{useremail, setUseremail, signedIn, setSignedIn, user, setUser}}>
       {props.children}
     </AppContext.Provider>
   );

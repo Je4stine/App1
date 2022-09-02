@@ -7,9 +7,7 @@ export const createAppData = /* GraphQL */ `
     $condition: ModelAppDataConditionInput
   ) {
     createAppData(input: $input, condition: $condition) {
-      id
       qrcode
-      baseurl
       alias
       createdBy
       createdAt
@@ -23,9 +21,7 @@ export const updateAppData = /* GraphQL */ `
     $condition: ModelAppDataConditionInput
   ) {
     updateAppData(input: $input, condition: $condition) {
-      id
       qrcode
-      baseurl
       alias
       createdBy
       createdAt
@@ -39,9 +35,7 @@ export const deleteAppData = /* GraphQL */ `
     $condition: ModelAppDataConditionInput
   ) {
     deleteAppData(input: $input, condition: $condition) {
-      id
       qrcode
-      baseurl
       alias
       createdBy
       createdAt

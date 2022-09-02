@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ToastAndroid, ActivityIndicator, Keyboard, StyleSheet } from 'react-native';
+import { View, Text, TextInput, ImageBackground, Image, TouchableOpacity, ToastAndroid, ActivityIndicator, Keyboard, StyleSheet,Alert } from 'react-native';
 import React,{useState,useEffect, useContext} from 'react';
 import { auth } from '../../Config';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -10,8 +10,7 @@ import { Auth } from 'aws-amplify';
 
 const Login = ({navigation}) => {
     const [loading, setLoading]= useState(false);
-    const [loggedIn, setLoggedIn]=useState(false);
-    const {useremail, setUseremail}=useContext(AppContext);
+    const {user, setUser, signedIn, setSignedIn, setUseremail}=useContext(AppContext);
     const [formState, setFormState]=useState({});
 
     const showToast = () => {
@@ -26,14 +25,16 @@ const Login = ({navigation}) => {
       Keyboard.dismiss();
       try {
           const user = await Auth.signIn(username, password);
-          navigation.navigate('Qr');
           setUseremail(formState.username);
-          setLoading(false)
+          setLoading(false);
+          setUser(user)
+          setSignedIn(true);
+          console.log(user);
+          navigation.navigate('DashBoard');
       } 
-      catch (error) {
-          console.log('error signing in', error);
-          alert(error);
-          setLoading(false)
+      catch (e) {
+          Alert.alert('Oops', e.message)
+          setLoading(false);
       }
   }
 
@@ -46,11 +47,14 @@ const Login = ({navigation}) => {
       }
     }
       
-     
-
 
   return (
     <View style={{flex:1}}>
+        <Spinner
+          visible={loading}
+          textContent={'Please wait...'}
+          textStyle={styles.spinnerTextStyle}
+        />
       <ImageBackground source={require('../assets/background.jpg')} resizeMode="cover" style={{ flex: 1,justifyContent: "center", alignItems:'center',}}>
         <Image source={require('../assets/logo.png')}/>
       <Text style={{color:'#4C9A2A', fontWeight:'bold', marginBottom:40, marginTop:20, fontSize:30, alignSelf:'center'}}> Welcome Back </Text>
@@ -82,10 +86,17 @@ const Login = ({navigation}) => {
         <Text style={{color:'#4C9A2A', fontSize:18}}>Sign up</Text>
         </TouchableOpacity>
       </View>
+
+      <View style={{flexDirection:'row', justifyContent:'center', marginTop:30}}>
+        <Text style={{fontSize:17}}>Forgot password</Text>
+        <TouchableOpacity onPress={()=>navigation.navigate('Reset')}>
+        <Text style={{color:'#4C9A2A', fontSize:17}}>{" "}Reset</Text>
+        </TouchableOpacity>
+      </View>
       </ImageBackground>
     </View>
   )
-}
+};
 
 export default Login;
 

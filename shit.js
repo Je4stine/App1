@@ -74,3 +74,31 @@ const getItems =async()=>{
      console.log(error)
     })
    }
+
+
+
+    // useEffect(()=>{
+  //   const listener = (data)=>{
+  //     if(data.payload.event == 'signIn' || data.payload.event == 'signOut'){
+  //       checkUser();
+  //     }
+  //   }
+  //   Hub.listen('auth', listener);
+  //   return ()=> Hub.remove('auth', listener);
+  // })
+
+  if (loading == true){
+    return(
+      <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+        <ActivityIndicator/>
+      </View>
+    )
+  }
+  // {
+  //   user? (AuthStackScreen()):(DrawerScreens())
+  // }
+  if (user == undefined){
+   return AuthStackScreen();
+  }else{
+   return DrawerScreens();
+  }

@@ -6,15 +6,7 @@ import { auth } from '../../Config';
 const Account = ({navigation}) => {
   const [email, setEmail]=useState('');
 
-  const handleReset=(email)=>{
-    auth.sendPasswordResetEmail(email, null, auth)
-    .then(() => {
-      alert("reset email sent to " + email);
-  })
-  .catch(function (e) {
-      console.log(e);
-  });
-  }
+  
 
   return (
     <View style={{flex:1, backgroundColor:"#192734"}}>
@@ -42,7 +34,7 @@ const Account = ({navigation}) => {
           />
           
           <View style={{height:40, width:'30%', backgroundColor:'green', borderRadius:5, justifyContent:'center', alignItems:'center'}}>
-          <TouchableOpacity style={{width:'80%',}} onPress={handleReset}>
+          <TouchableOpacity style={{width:'80%',}} >
             <Text style={{color:'#fff', fontSize:20, alignSelf:'center'}}>Submit</Text>
           </TouchableOpacity>
           </View>

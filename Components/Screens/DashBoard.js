@@ -7,40 +7,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppContext } from '../../AppContext';
 import {API, graphqlOperation} from 'aws-amplify';
 import * as queries from '../../src/graphql/queries';
+import {Auth} from 'aws-amplify';
 
 
 
 const DashBoard=({navigation})=> {
   const {qrcode, setQrcode}=useContext(AppContext);
-  const [data, setData]=useState([]);
-  
-  // console.log(qrcode)
-  
-  async function fetchAllData(){
-    try{
-      const {data} = await API.graphql(graphqlOperation(queries.listAppData));
-      setData(data.listAppData.items)
-      
-    }catch(err){
-      console.log(err)
-    }
-  }
-
+  const [receivedData, setReceivedData]=useState([]);
   const [deviceData, setDeviceData]=useState([]);
-  const baseUrl= 'https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/'
-  
+  const [appData, setAppData]=useState([]);
 
-
-  const serialnumber = AsyncStorage.getItem('serialnumber');
  
-  useEffect (()=>{
-  
-  fetchAllData();
-  console.log(data.qrcode)
+ 
 
-   
-
-    fetch (baseUrl+data, {
+  const getData = async()=>{
+    const baseUrl= 'https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/';
+    const serialnumber = await AsyncStorage.getItem('serialnumber');
+ 
+    // const url = data.qrcode;
+    fetch (baseUrl + serialnumber, {
     headers :{
       'Cache-Control':'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -52,15 +37,56 @@ const DashBoard=({navigation})=> {
       .then((response)=>{
         // console.log(response);
         setDeviceData(response);
-        console.log(response);
-        console.log(data.item.qrcode);
-      
+        console.log(response);    
       });
+  };
+
+
+ 
+  useEffect (()=>{
+
+    async function fetchAllData(){
+      const user = await Auth.currentAuthenticatedUser();
+     
+     
+      try{
+        const qrdata = await API.graphql(graphqlOperation(queries.listAppData,{
+          filter:{
+            createdBy: {contains:user.attributes.email}
+          }
+        }));
+        setReceivedData(qrdata.data.listAppData.items);
+        console.log(user.attributes.email)
+       
+      }catch(err){
+        console.log(err);
+      }
+    };
+
+
+    // async function getStuff (){
+    //   const user = await Auth.currentAuthenticatedUser();
+    //   const createdBy = user.attributes.email
+    //   try{
+    //     const stuff = await API.graphql(graphqlOperation(queries.getAppData,{
+    //       createdBy
+    //     }));
+    //     setAppData(stuff.data.getAppData.items);
+    //     console.log(stuff)
+    //   } catch(err){
+    //     console.log(err)
+    //   }
+
+    // }
+  
+  fetchAllData();
+  // getStuff();
+  
+
+ 
   },[]);
 
-
-
-
+  
 
     return (
       <View style={{flex:1, backgroundColor:"#192734"}}>
@@ -74,16 +100,13 @@ const DashBoard=({navigation})=> {
           </TouchableOpacity>
         </View>
 
-        
-        <Devices DeviceId={deviceData.SerialNumber}/>
-
-      
-
-
-
-        
-        
-        <TouchableOpacity style={{flex:1}} onPress={()=>{navigation.navigate('Config')}}>
+        <FlatList
+          data={receivedData}
+          renderItem={({item})=><Devices DeviceId={item.qrcode}/>}
+          keyExtractor={(item)=>item.qrcode}
+        />
+     
+        <TouchableOpacity style={{flex:1}} onPress={()=>{navigation.navigate('Qr')}}>
         <LinearGradient  colors={['#42A341', '#074C00', '#074C00']} style={{height:50, width:'98%', position:'absolute',bottom:5,backgroundColor:'green', borderRadius:10, justifyContent:'center', alignSelf:"center"}}>
             <Text style={{alignSelf:'center',fontSize:25, fontWeight:'900',color:'#fff'}}>
               Link a New Node
@@ -97,9 +120,4 @@ const DashBoard=({navigation})=> {
 export default DashBoard;
 
 
-{/* <LinearGradient
-colors={['#42A341', '#074C00', '#074C00']}
-style={{height:40,width:'90%', borderRadius:4, flexDirection:'row', alignItems:'center', justifyContent:'center', marginBottom:10, alignSelf:'center'}}>            
-<Ionicons name="eye-sharp" size={24} color="blue" />
-<Text style={{fontSize:20, color:'#fff', alignSelf:'center', marginLeft:10}}>View Data</Text>
-</LinearGradient> */}
+

@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useContext } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, Alert, ToastAndroid } from 'react-native';
 import { Camera } from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppContext } from '../../AppContext';
@@ -18,17 +18,20 @@ const QrSanner = ({navigation}) =>  {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [scanned, setScanned]=useState(false);
   const {useremail, setUseremail}=useContext(AppContext);
-  const [data, setData]=useState([]);
+  const [alldata, setAlldata]=useState([]);
   const [formState, setFormState]=useState({});
   const [code, setCode]=useState('');
+  const [modalVisible, setModalVisble]=useState(false);
+  const {qrcode, setQrcode}=useContext(AppContext)
+
+
 
 
 
   async function fetchAllData(){
     try{
-      const {data} = await API.graphql(graphqlOperation(queries.listAppData));
-      setData(data.listAppData.items.qrcode)
-      console.log(data.qrcode);
+      const qrdata = await API.graphql(graphqlOperation(queries.listAppData));
+      setAlldata(qrdata.data.listAppData.items)
     }catch(err){
       console.log(err)
     }
@@ -37,34 +40,23 @@ const QrSanner = ({navigation}) =>  {
 
 
   async function createData (){
-    // const { qrcode } =formState;
-    const qrcode = await AsyncStorage.getItem('serialnumber');
+    const qrcode = await AsyncStorage.getItem("serialnumber")
+    console.log(code);
+    
     try{
-     
       await API.graphql(
         graphqlOperation(mutations.createAppData,{
           input:{qrcode,createdBy:useremail}
         })
       )
-
+      navigation.navigate('DashBoard');
+        
     }catch(err){
       console.log(err)
+      setModalVisble(true)
     }
   }
   
-
-
-
-  const handleQrAdd = async()=>{
-    fetchAllData();
-    const qrcode = await AsyncStorage.getItem('serialnumber');
-      if (data.includes(qrcode)) {
-          alert('The device has already been scanned');
-      }else{
-        // createData();
-        console.log('same')
-      }
-  }
 
 
   
@@ -88,34 +80,66 @@ const QrSanner = ({navigation}) =>  {
   }
 
   
-
+  const handleModalQuit =()=>{
+    setModalVisble(false)
+  }
 
 
   const handleBarcdeScanned = async({type, data})=>{
     setScanned(true);
     
-    alert(`Qrcode with type ${data} has been scanned`);
+    Alert.alert('Success', `${data} has been scanned`);
 
-    setCode(data);
-    AsyncStorage.setItem("serialnumber", data.toString());
+    await AsyncStorage.setItem("serialnumber", data.toString());
 
+    // const serialnumber = await AsyncStorage.getItem('serialnumber');
+    // const serialnumber1 = await AsyncStorage.getItem('serialnumber1');
+    // const serialnumber2 = await AsyncStorage.getItem('serialnumber2');
+    // const serialnumber3 = await AsyncStorage.getItem('serialnumber3');
+    
+
+    // if (serialnumber != ''){
+    //     await AsyncStorage.setItem("serialnumber1", data.toString());
+    // }else if(serialnumber1!= ''){
+    //   await AsyncStorage.setItem("serialnumber2", data.toString());
+    // }else if (serialnumber2 != ''){
+    //   await AsyncStorage.setItem("serialnumber3", data.toString());
+    // }else{
+    //   await AsyncStorage.setItem("serialnumber4", data.toString());
+    // }
    
-    // setFormState({...formState, qrcode: serialnumber});
-    
-    console.log(code);
-    handleQrAdd();
-    
-    navigation.navigate('DashBoard');
+    setCode(data)  
+    console.log(alldata);
+    createData();
   };
+
 
 
   return(
   <View style={styles.container}>
+    <Text style={{marginTop:20}}>code;{code}</Text>
+    <Modal
+    animationType='slide'
+    transparent={true}
+    visible={modalVisible}
+    >
+      <View style={{flex:1, justifyContent:'center', alignItems:'center', marginTop:22}}>
+      <View style={{margin:20, backgroundColor:'#fff', padding:50, alignItems:'center', elevation:5, borderRadius:2}}>
+        <Text style={{ fontSize:18}}> The device has already been scanned</Text>
+          <TouchableOpacity onPress={handleModalQuit}>
+          <View style={{backgroundColor:'green', height:50, width:100, borderRadius:5, elevation:5, alignItems:'center', justifyContent:'center', marginTop:30}}>
+            <Text style={{fontSize:20, fontWeight:'bold', color:'#fff'}}>Rescan</Text>
+          </View>
+          </TouchableOpacity>
+    
+      </View>
+      </View>
+    </Modal>
     <View style={{height:40, marginTop:40}}>
 
     </View>
       <Camera
-        onBarCodeScanned={ scanned ? undefined : handleBarcdeScanned
+        onBarCodeScanned={ scanned ? handleBarcdeScanned : handleBarcdeScanned
         
         }
         barCodeScannerSettings={{

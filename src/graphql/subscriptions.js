@@ -4,9 +4,7 @@
 export const onCreateAppData = /* GraphQL */ `
   subscription OnCreateAppData($filter: ModelSubscriptionAppDataFilterInput) {
     onCreateAppData(filter: $filter) {
-      id
       qrcode
-      baseurl
       alias
       createdBy
       createdAt
@@ -17,9 +15,7 @@ export const onCreateAppData = /* GraphQL */ `
 export const onUpdateAppData = /* GraphQL */ `
   subscription OnUpdateAppData($filter: ModelSubscriptionAppDataFilterInput) {
     onUpdateAppData(filter: $filter) {
-      id
       qrcode
-      baseurl
       alias
       createdBy
       createdAt
@@ -30,9 +26,7 @@ export const onUpdateAppData = /* GraphQL */ `
 export const onDeleteAppData = /* GraphQL */ `
   subscription OnDeleteAppData($filter: ModelSubscriptionAppDataFilterInput) {
     onDeleteAppData(filter: $filter) {
-      id
       qrcode
-      baseurl
       alias
       createdBy
       createdAt
