@@ -22,7 +22,9 @@ const QrSanner = ({navigation}) =>  {
   const [formState, setFormState]=useState({});
   const [code, setCode]=useState('');
   const [modalVisible, setModalVisble]=useState(false);
-  const {qrcode, setQrcode}=useContext(AppContext)
+  const {qrcode, setQrcode}=useContext(AppContext);
+
+ 
 
 
 
@@ -67,7 +69,7 @@ const QrSanner = ({navigation}) =>  {
       setHasPermission(status === 'granted');
     })();
 
-    alert('Please scan your device')
+    alert('Please scan your device Qrcode')
 
   }, []);
 
@@ -81,32 +83,22 @@ const QrSanner = ({navigation}) =>  {
 
   
   const handleModalQuit =()=>{
-    setModalVisble(false)
+    setModalVisble(false);
+    navigation.navigate('DashBoard')
   }
 
 
   const handleBarcdeScanned = async({type, data})=>{
     setScanned(true);
     
-    Alert.alert('Success', `${data} has been scanned`);
+    // Alert.alert('Success', ` Device ${data} is now available on your account`);
+    
+    const showToast = () => {
+      ToastAndroid.show('The Device is now available on your account', ToastAndroid.LONG);
+    };
+    showToast();
 
     await AsyncStorage.setItem("serialnumber", data.toString());
-
-    // const serialnumber = await AsyncStorage.getItem('serialnumber');
-    // const serialnumber1 = await AsyncStorage.getItem('serialnumber1');
-    // const serialnumber2 = await AsyncStorage.getItem('serialnumber2');
-    // const serialnumber3 = await AsyncStorage.getItem('serialnumber3');
-    
-
-    // if (serialnumber != ''){
-    //     await AsyncStorage.setItem("serialnumber1", data.toString());
-    // }else if(serialnumber1!= ''){
-    //   await AsyncStorage.setItem("serialnumber2", data.toString());
-    // }else if (serialnumber2 != ''){
-    //   await AsyncStorage.setItem("serialnumber3", data.toString());
-    // }else{
-    //   await AsyncStorage.setItem("serialnumber4", data.toString());
-    // }
    
     setCode(data)  
     console.log(alldata);

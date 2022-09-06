@@ -24,6 +24,8 @@ import SignOut from '../Components/Screens/SignOut';
 import ForgotPassword from '../Components/Screens/ForgotPassword';
 import Verify from '../Components/Screens/Verify';
 import NewPassword from '../Components/Screens/NewPassword';
+import Alias from '../Components/Screens/Alias';
+
 
 import Account from '../Components/Screens/Account';
 
@@ -36,7 +38,6 @@ function AuthStackScreen (){
   <AuthStack.Navigator>
         <AuthStack.Screen name='Login' component={Login} options={{headerShown:false}}/>
         <AuthStack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
- 
         <AuthStack.Screen name="Qr" component={QrScanner} options={{headerShown:false}}/>
         <AuthStack.Screen name="DashBoard" component={DashBoard} options={{headerShown:false}}/>
         <AuthStack.Screen name = 'Home'component={RootNavigation} options={{headerShown:false}}/>
@@ -65,6 +66,7 @@ function DrawerScreens (){
       <Drawer.Screen name='Home' component={StackNavigation}/>
       <Drawer.Screen name='Acount' component={Account}/>
       <Drawer.Screen name='SignOut' component={SignOut}/>
+      <Drawer.Screen name='SignOut' component={SignOut}/>
     </Drawer.Navigator>
   )
 }
@@ -72,14 +74,13 @@ function DrawerScreens (){
 
 function RootNavigation(){
   const [cuser, setCuser]=useState(undefined);
-  const [loading, setLoading]=useState(false);
   const {user, setUser, signedIn, setSignedIn}=useContext(AppContext);
 
  const checkUser =async()=>{
   try{
   const authUser = await Auth.currentAuthenticatedUser();
   setCuser(authUser);
-  setLoading(false);
+  setSignedIn(true);
   } catch(err){
     console.log(err)
   }
@@ -97,6 +98,7 @@ function RootNavigation(){
         <Drawer.Screen name='Home' component={StackNavigation}/>
         <Drawer.Screen name='Acount' component={Account}/>
         <Drawer.Screen name='SignOut' component={SignOut}/>
+        <Drawer.Screen name='Alias' component={Alias}/>
         </Drawer.Navigator>
       ):(
         <AuthStack.Navigator>

@@ -1,11 +1,12 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, BackHandler } from 'react-native';
 import React from 'react';
 import {Auth} from 'aws-amplify';
 
-const SignOut = () => {
+const SignOut = ({navigation}) => {
 
     const signOut =()=>{
         Auth.signOut();
+        navigation.navigate('SignIn');
     }
   return (
     <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>

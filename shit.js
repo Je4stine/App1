@@ -102,3 +102,45 @@ const getItems =async()=>{
   }else{
    return DrawerScreens();
   }
+
+
+
+
+      
+            {/* {renderLabel()} */}
+            <Dropdown
+            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={!isFocus ? 'Set time' : '...'}
+            searchPlaceholder="Search..."
+            value={value}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={item => {
+              setValue(item.value);
+              setIsFocus(false);
+            }}
+            renderLeftIcon={() => (
+              <Octicons name="triangle-down" size={24} color="#fff" />
+            )}
+        />
+
+
+        const data = [
+          { label: '5 sec', value: '5' },
+          { label: '10 sec', value: '10' },
+          { label: '15 sec', value: '15' },
+          { label: '20 sec', value: '20' },
+          { label: '30 sec', value: '30' },
+          { label: '40 sec', value: '40' },
+          { label: '50 sec', value: '50' },
+          { label: '60 sec', value: '60' },
+        ];

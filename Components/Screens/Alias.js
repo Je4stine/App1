@@ -3,22 +3,15 @@ import React,{useState} from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import {Auth} from 'aws-amplify';
 
-const Account =  ({navigation}) => {
+const Alias =  ({navigation}) => {
   const [formState, setFormState]=useState({});
   const user =  Auth.currentAuthenticatedUser();
 
   const handleReset =async()=>{
    
-    try {
-      await Auth.changePassword(user,formState.oldPassword, formState.newPassword);
-    } 
-    catch(err){
-      console.log(err)
-    }
+    navigation.navigate("DashBoard")
     
   };
-
- 
 
   
 
@@ -27,31 +20,22 @@ const Account =  ({navigation}) => {
         <View style={{backgroundColor:'#2A4156', height:80, width:'100%',marginTop:30, elevation:2, justifyContent:'space-between',alignItems:'center', padding:10, flexDirection:'row', marginBottom:20}}>
             <View style={{flexDirection:'row', alignItems:'center'}}>
               <Image source={require('../assets/logo.png')} style={{height:50,width:45, marginRight:20}}/>
-              <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>Account Information</Text>
+              <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>Enter new device Name</Text>
             </View>
             <TouchableOpacity onPress={()=>navigation.toggleDrawer()}>
                <Ionicons name="menu" size={33} color="#fff" />
             </TouchableOpacity>
         </View>
 
-        <View style={{height:80, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2, padding:10, alignItems:'center'}}>
-        <Ionicons name="person" size={33} color="#fff" />
-          <Text style={{color:'#fff', marginLeft:20, fontSize:20}}> user</Text>
-        </View>
+       
         <View style={{height:200, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2, padding:10, alignItems:'center', justifyContent:'center'}}>
           <Text style={{color:'#fff', fontSize:15}}> Reset Password</Text>
           <View style={{alignItems:'center'}}>
-          <TextInput
-              style={{padding:9, height:40, width:300, borderColor:'#fff', borderWidth:0.5, borderRadius:4, marginTop:10, color:'#fff'}}
-              placeholder='Old Password'
-              onChange={(text) => setFormState({...formState, oldPassword: text})}
-              secureTextEntry
-          />
 
           <TextInput
               style={{padding:9, height:40, width:300, borderColor:'#fff', borderWidth:0.5, borderRadius:4, marginTop:10, color:'#fff'}}
-              placeholder='New Password'
-              onChange={(text) => setFormState({...formState, newPassword: text})}
+              placeholder='New name'
+              onChange={(text) => setFormState({...formState, newName: text})}
               secureTextEntry
             />
           
@@ -67,4 +51,4 @@ const Account =  ({navigation}) => {
   )
 }
 
-export default Account;
+export default Alias;

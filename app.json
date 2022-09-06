@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Tawi1",
+    "name": "Tawi Edge",
     "slug": "Tawi_edge",
     "version": "1.0.0",
     "icon": "./Components/assets/icon3.png",
@@ -13,7 +13,7 @@
    
     },
     "splash": {
-      "image": "./Components/assets/logo2.png",
+      "image": "./Components/assets/splash.png",
       "resizeMode": "contain"
     }
   }
