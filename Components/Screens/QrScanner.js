@@ -6,7 +6,7 @@ import { AppContext } from '../../AppContext';
 import {db, firebase} from '../../Config';
 import {collection,add,serverTimestamp, addDoc, Timestamp, query, QuerySnapshot, setDoc,doc, where} from 'firebase/firestore';
 import { cos } from 'react-native-reanimated';
-import {API, graphqlOperation} from 'aws-amplify';
+import {API, graphqlOperation, Auth} from 'aws-amplify';
 import * as queries from '../../src/graphql/queries';
 import * as mutations from '../../src/graphql/mutations';
 
@@ -42,13 +42,14 @@ const QrSanner = ({navigation}) =>  {
 
 
   async function createData (){
-    const qrcode = await AsyncStorage.getItem("serialnumber")
+    const qrcode = await AsyncStorage.getItem("serialnumber");
     console.log(code);
+    const user = await Auth.currentAuthenticatedUser();
     
     try{
       await API.graphql(
         graphqlOperation(mutations.createAppData,{
-          input:{qrcode,createdBy:useremail}
+          input:{qrcode,createdBy:user.attributes.email}
         })
       )
       navigation.navigate('DashBoard');

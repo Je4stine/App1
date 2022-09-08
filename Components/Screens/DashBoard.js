@@ -8,8 +8,7 @@ import { AppContext } from '../../AppContext';
 import {API, graphqlOperation} from 'aws-amplify';
 import * as queries from '../../src/graphql/queries';
 import {Auth} from 'aws-amplify';
-import SensorCard from './SensorCard';
-import TDS from './TDS';
+
 
 
 
@@ -21,28 +20,6 @@ const DashBoard=({navigation})=> {
 
  
  
-
-  // const getData = async()=>{
-  //   const baseUrl= 'https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/';
-  //   const serialnumber = await AsyncStorage.getItem('serialnumber');
- 
-  //   // const url = data.qrcode;
-  //   fetch (baseUrl + serialnumber, {
-  //   headers :{
-  //     'Cache-Control':'no-cache, no-store, must-revalidate',
-  //     'Pragma': 'no-cache',
-  //     'Expires':'0'
-  //   }
-  // })
-     
-  //     .then((response)=>response.json())
-  //     .then((response)=>{
-  //       // console.log(response);
-  //       setDeviceData(response);
-  //       console.log(response);    
-  //     });
-  // };
-
   
 
   useEffect (()=>{
@@ -58,7 +35,8 @@ const DashBoard=({navigation})=> {
           }
         }));
         setReceivedData(qrdata.data.listAppData.items);
-        console.log(user.attributes.email)
+        console.log(user.attributes.email);
+    
        
       }catch(err){
         console.log(err);
@@ -66,15 +44,15 @@ const DashBoard=({navigation})=> {
     };
 
 
-  fetchAllData();
-
-  const interval = setInterval(() => {
-        
     fetchAllData();
-  }, 10000);
 
-  return ()=>clearInterval(interval)
+    const interval = setInterval(() => {
+          
+      fetchAllData();
+    }, 10000);
 
+    return ()=>clearInterval(interval)
+ 
  
   },[]);
 

@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator, Platform, Linking, Modal, TextInput} from 'react-native'
-import React,{useState, useEffect, useContext} from 'react';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator, Platform, Linking, Modal, TextInput, Image} from 'react-native'
+import React,{useState, useEffect, useContext, useCallback} from 'react';
 import SensorCard from './SensorCard';
 import Phsensor from './Phsensor';
 import TDS from './TDS';
@@ -11,6 +11,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import {AppContext} from '../../AppContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+import {API, graphqlOperation} from 'aws-amplify';
+import * as queries from '../../src/graphql/queries';
+
 
 
 
@@ -34,22 +39,19 @@ const Sensors =({route}) =>{
   const [show, setShow] = useState(false);
   const [modalVisible, setModalVisble]=useState(false);
   const [formState, setFormState]=useState({});
-
+  const [title, setTitle] = useState('');
+  const [deviceAlias, setDeviceAlias]=useState([]);
   
 
-  const {qrcode, setQrcode}=useContext(AppContext);
+  const {qrcode, setQrcode, serialNumber, setSerialNumber}=useContext(AppContext);
   const {snNumber}= route.params;
 
-  // const getLabel =async()=>{
-  //   const serialnumber = await AsyncStorage.getItem('serialnumber');
-  //   setSerialNo(serialnumber)
-  //   console.log(serialnumber);
-  // };
 
   const baseUrl = 'https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/';
   
  
   const getData =async()=>{
+
     fetch (baseUrl+snNumber,{
     headers :{
       'Cache-Control':'no-cache, no-store, must-revalidate',
@@ -57,30 +59,54 @@ const Sensors =({route}) =>{
       'Expires':'0'
     }
   })
-     
       .then((response)=>response.json())
       .then((response)=>{
-        // console.log(response);
         setSensorData(response);
-        // console.log(response)
-        // console.log(serialnumber)
       });
       
   };
 
- 
+
+  const getName = async()=>{
+
+        try{
+          const qrdata = await API.graphql(graphqlOperation(queries.listAppData,{
+            filter:{
+              qrcode: {contains:snNumber}
+            }
+          }));
+          setDeviceAlias(qrdata.data.listAppData.items);
+          console.log(deviceAlias)
+          
+        
+        }catch(err){
+          console.log(err);
+        }
+    };
+
+  useFocusEffect(
+   useCallback(()=>{
+      getName();
+      console.log("Data")
+      console.log(deviceAlias)
+  },[]));
+
+
+
 
   useEffect(()=>{
-
+      
       getData();
-      // getLabel();
+      setSerialNumber(snNumber);
       const interval = setInterval(() => {
         
         getData();
-      }, 10000);
+      }, 5000);
 
       return ()=>clearInterval(interval);
   },[]);
+
+  
 
   const handleModalQuit =()=>{
     setModalVisble(false)
@@ -161,6 +187,13 @@ const Sensors =({route}) =>{
   });
 
  
+  const renderName =()=>{
+    return (
+      deviceAlias.map((item, index)=>  <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}} key={index} > Node ID:{" "}{item.alias || snNumber}</Text>)
+    )
+  };
+
+ 
   return (
     <View style={{flex:1, backgroundColor:"#192734"}}>
       <Modal
@@ -207,8 +240,14 @@ const Sensors =({route}) =>{
       </View>
       </View>
     </Modal>
-      <View style={{backgroundColor:'#2A4156', height:80, width:'100%',marginTop:30, elevation:2, justifyContent:'center', padding:10}}>
-        <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>Node ID:{" "}{snNumber}</Text>
+      <View style={{backgroundColor:'#2A4156', height:80, width:'100%',marginTop:30, elevation:2, justifyContent:'space-between', padding:10, flexDirection:'row' }}>
+       
+        {/* <Text style={{color:"#fff", fontSize:24, fontWeight:'900'}}>Node ID:{" "}{deviceAlias.qrcode || snNumber}</Text> */}
+        {deviceAlias.alias== ""? (<Text style={{color:"#fff", fontSize:24, fontWeight:'900'}} > Node ID:{" "}{snNumber}</Text>) : (renderName())}
+       
+        <TouchableOpacity onPress={()=>navigation.toggleDrawer()}>
+          <Ionicons name="menu" size={33} color="#fff" />
+          </TouchableOpacity>
       </View>
       <Animated.ScrollView 
       scrollEventThrottle={16}
@@ -223,7 +262,7 @@ const Sensors =({route}) =>{
             </View>
           
           ):
-              (<SensorCard moisture={sensorData.Moisture.moisture} ec={sensorData.Moisture.conductivity} temperature={sensorData.Moisture.temperature} datetime={sensorData.GpsData.date_time}/>)
+              (<SensorCard moisture={sensorData.Moisture.moisture} ec={sensorData.Moisture.conductivity} temperature={sensorData.Moisture.temperature} datetime={sensorData.GpsData.date_time} status={sensorData.Moisture.status}/>)
           }
 
           { sensorData.PhTramsmitter == null? (
@@ -231,7 +270,7 @@ const Sensors =({route}) =>{
            {/* <ActivityIndicator size="small" color="#42A341" /> */}
          </View>
          ):
-             ( <Phsensor phValue={sensorData.PhTramsmitter.phValue} datetime={sensorData.GpsData.date_time}/>)
+             ( <Phsensor phValue={sensorData.PhTramsmitter.phValue} datetime={sensorData.GpsData.date_time} status={sensorData.PhTramsmitter.status}/>)
           }
           
           {
@@ -241,7 +280,7 @@ const Sensors =({route}) =>{
             </View>
             
             ):
-            (<TDS conductivity={sensorData.TdsSensor.conductivity } tds={sensorData.TdsSensor.tds} temperature={sensorData.TdsSensor.temperature} datetime={sensorData.GpsData.date_time}/>)
+            (<TDS conductivity={sensorData.TdsSensor.conductivity } tds={sensorData.TdsSensor.tds} temperature={sensorData.TdsSensor.temperature} datetime={sensorData.GpsData.date_time} status={sensorData.TdsSensor.status}/>)
           }
 
         <View style={{height:200}}></View>

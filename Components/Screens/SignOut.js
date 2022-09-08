@@ -6,7 +6,7 @@ const SignOut = ({navigation}) => {
 
     const signOut =()=>{
         Auth.signOut();
-        navigation.navigate('SignIn');
+        BackHandler.exitApp();
     }
   return (
     <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>

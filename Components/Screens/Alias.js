@@ -1,19 +1,55 @@
 import { View, Text, Image, TouchableOpacity, TextInput, Alert} from 'react-native';
-import React,{useState} from 'react';
+import React,{useState, useContext, useEffect} from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import {Auth} from 'aws-amplify';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppContext } from '../../AppContext';
+import {API, graphqlOperation, Auth} from 'aws-amplify';
+import * as queries from '../../src/graphql/queries';
+import * as mutations from '../../src/graphql/mutations';
+
 
 const Alias =  ({navigation}) => {
   const [formState, setFormState]=useState({});
-  const user =  Auth.currentAuthenticatedUser();
+  const [receivedData, setReceivedData]=useState([]);
+  const {serialNumber, setSerialNumber}=useContext(AppContext);
 
-  const handleReset =async()=>{
-   
-    navigation.navigate("DashBoard")
+
+async function dataReset (){
+  const qrcode = serialNumber;
+  const alias = formState.newname;
+  try{
+    await API.graphql(
+      graphqlOperation(mutations.updateAppData ,{
+        input:{qrcode:qrcode, alias: alias}
+      })
+    )
+    navigation.navigate('DashBoard');
+      
+  }catch(err){
+    console.log(err)
+  }
+}
+
+  const handleReset =()=>{
+    dataReset();
+    console.log();
     
   };
 
-  
+  const handleChange=(e, text)=>{
+    e.persist();
+    setNewName(text);
+   
+    
+  }
+
+
+  useEffect(()=>{
+      // getData();
+      console.log(serialNumber);
+      // console.log(receivedData);
+      // (text) => setNewName(text)
+  },[])
 
   return (
     <View style={{flex:1, backgroundColor:"#192734"}}>
@@ -29,14 +65,14 @@ const Alias =  ({navigation}) => {
 
        
         <View style={{height:200, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2, padding:10, alignItems:'center', justifyContent:'center'}}>
-          <Text style={{color:'#fff', fontSize:15}}> Reset Password</Text>
+          <Text style={{color:'#fff', fontSize:15}}> Rename device</Text>
           <View style={{alignItems:'center'}}>
 
           <TextInput
               style={{padding:9, height:40, width:300, borderColor:'#fff', borderWidth:0.5, borderRadius:4, marginTop:10, color:'#fff'}}
               placeholder='New name'
-              onChange={(text) => setFormState({...formState, newName: text})}
-              secureTextEntry
+              onChangeText={(text) => setFormState({...formState, newname: text})}
+              value={formState.newname}
             />
           
           <View style={{height:40, width:100, backgroundColor:'green', borderRadius:5, justifyContent:'center', alignItems:'center', marginTop:20}}>

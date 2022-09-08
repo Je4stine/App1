@@ -36,7 +36,7 @@ const Account =  ({navigation}) => {
 
         <View style={{height:80, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2, padding:10, alignItems:'center'}}>
         <Ionicons name="person" size={33} color="#fff" />
-          <Text style={{color:'#fff', marginLeft:20, fontSize:20}}> user</Text>
+          <Text style={{color:'#fff', fontSize:20}}> user</Text>
         </View>
         <View style={{height:200, width:'90%', backgroundColor:'#2A4156', alignSelf:'center', marginTop:10, borderRadius:10, elevation:2, padding:10, alignItems:'center', justifyContent:'center'}}>
           <Text style={{color:'#fff', fontSize:15}}> Reset Password</Text>

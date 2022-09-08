@@ -22,12 +22,6 @@ const Devices=({
           <Text style={{padding:10, height:40, width:'40%', borderColor:'green', borderRadius:5, borderWidth:3, backgroundColor:'#192734', color:'#fff', fontSize:15}}>
             {DeviceId}
           </Text>
-          {/* placeholder={DeviceId}
-          placeholderTextColor="#fff"
-          onChangeText={(text) => setID(text)}
-          // value={id}
-          /> */}
-
     </View>
     </TouchableOpacity>
   )

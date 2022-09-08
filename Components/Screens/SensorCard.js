@@ -6,7 +6,8 @@ const SensorCard=({
     moisture="0",
     ec="0",
     temperature="0",
-    datetime="0"
+    datetime="0",
+    status="1"
 
 })=> {
     const [depth, setDepth]=useState();
@@ -16,12 +17,29 @@ const SensorCard=({
             <View style={{width:'90%', height:55, borderColor:'#fff', borderWidth:3, borderRadius:12, alignSelf:'center', padding:10, flexDirection:'row', justifyContent:'space-around', alignItems:'center', backgroundColor:'#2A4156', marginBottom:10, marginTop:10}}>
                
                 <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
-                <View style={{height:10, width:10, borderRadius:5, backgroundColor:'green', marginRight:5}}>
-                </View>
+                
+                {status=="1"? 
+               ( <View style={{height:10, width:10, borderRadius:5, backgroundColor:'green', marginRight:5}}>
+                </View>) :(
+                    
                 <View style={{height:10, width:10, borderRadius:5, backgroundColor:'#fff', marginRight:5}}>
                 </View>
+                )
+                }
                 <View style={{height:10, width:10, borderRadius:5, backgroundColor:'#fff', marginRight:5}}>
                 </View>
+
+
+                {status=="1"? 
+               ( <View style={{height:10, width:10, borderRadius:5, backgroundColor:'#fff', marginRight:5}}>
+                </View>) :(
+                    
+                <View style={{height:10, width:10, borderRadius:5, backgroundColor:'orange', marginRight:5}}>
+                </View>
+                )
+                }
+
+
                 </View>
 
                 <View>
@@ -61,13 +79,12 @@ const SensorCard=({
                          <Text style={{color:'#fff', fontSize:30}}>%</Text>
                          <Text style={{color:'#fff', fontSize:30}}>US</Text>
                          <Text style={{color:'#fff', fontSize:30}}>C</Text>
-
                     </View>
 
                 </View>
 
-                <View style={{height:35, width:'50%', borderWidth:2, borderColor:'#fff', borderRadius:5, alignSelf:'flex-end', marginTop:20, marginRight:20, padding:5 }}>
-                <Text style={{fontSize:25, fontWeight:'bold'}}>{datetime}</Text>    
+                <View style={{height:35, width:'50%', borderWidth:2, borderColor:'yellow', borderRadius:5, alignSelf:'flex-end', marginTop:20, marginRight:20, padding:5, alignItems:"center", justifyContent:'center', backgroundColor:'#fff' }}>
+                <Text style={{fontSize:15, fontWeight:'bold'}}>{datetime}</Text>    
                 </View>
         </View>  
 

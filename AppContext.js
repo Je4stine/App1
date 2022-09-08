@@ -7,9 +7,10 @@ const AppProvider = (props) => {
   const [useremail, setUseremail]=useState('');
   const [user, setUser]=useState([]);
   const [signedIn, setSignedIn]=useState(false);
+  const [serialNumber, setSerialNumber]=useState('');
 
   return (
-    <AppContext.Provider value={{useremail, setUseremail, signedIn, setSignedIn, user, setUser}}>
+    <AppContext.Provider value={{useremail, setUseremail, signedIn, setSignedIn, user, setUser, serialNumber, setSerialNumber}}>
       {props.children}
     </AppContext.Provider>
   );
