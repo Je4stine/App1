@@ -72,7 +72,7 @@ const DashBoard=({navigation})=> {
 
         <FlatList
           data={receivedData}
-          renderItem={({item})=><Devices DeviceId={item.qrcode}/>}
+          renderItem={({item})=><Devices DeviceId={item.qrcode} DeviceName={item.alias}/>}
           keyExtractor={(item)=>item.qrcode}
         />
 
