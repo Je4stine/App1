@@ -1,44 +1,62 @@
-import { Text, View, Image, TouchableOpacity } from 'react-native';
-import React,{useEffect, useState} from 'react';
+import { Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
+import React,{useEffect, useState, useContext} from 'react';
 import Devices from './Devices';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppContext } from '../../AppContext';
+import {API, graphqlOperation} from 'aws-amplify';
+import * as queries from '../../src/graphql/queries';
+import {Auth} from 'aws-amplify';
 
 
 
 
 const DashBoard=({navigation})=> {
+  const {qrcode, setQrcode}=useContext(AppContext);
+  const [receivedData, setReceivedData]=useState([]);
   const [deviceData, setDeviceData]=useState([]);
+  const [appData, setAppData]=useState([]);
+
  
+ 
+  
+
   useEffect (()=>{
-    fetch ('https://tawi-edge-device-realtime-data.s3.amazonaws.com/tawi-device/tawi_edge_device/94b555c72160',{
-    headers :{
-      'Cache-Control':'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires':'0'
-    }
-  })
+
+    async function fetchAllData(){
+      const user = await Auth.currentAuthenticatedUser();
      
-      .then((response)=>response.json())
-      .then((response)=>{
-        // console.log(response);
-        setDeviceData(response);
-        console.log(response)
-      
-      });
+     
+      try{
+        const qrdata = await API.graphql(graphqlOperation(queries.listAppData,{
+          filter:{
+            createdBy: {contains:user.attributes.email}
+          }
+        }));
+        setReceivedData(qrdata.data.listAppData.items);
+        console.log(user.attributes.email);
+    
+       
+      }catch(err){
+        console.log(err);
+      }
+    };
+
+
+    fetchAllData();
+
+    const interval = setInterval(() => {
+          
+      fetchAllData();
+    }, 10000);
+
+    return ()=>clearInterval(interval)
+ 
+ 
   },[]);
-//  fetch(url)
-//       .then((response) => response.json())
-//       .then((data) => {
-//         receideData.push(data) 
-//       })
-//       .then(()=>{
-//         loadData()
-//       });
-//     });
 
-
+  
 
     return (
       <View style={{flex:1, backgroundColor:"#192734"}}>
@@ -52,11 +70,15 @@ const DashBoard=({navigation})=> {
           </TouchableOpacity>
         </View>
 
-        
-        <Devices DeviceId={deviceData.SerialNumber}/>
-        
-        
-        <TouchableOpacity style={{flex:1}} onPress={()=>{navigation.navigate('Config')}}>
+        <FlatList
+          data={receivedData}
+          renderItem={({item})=><Devices DeviceId={item.qrcode} DeviceName={item.alias}/>}
+          keyExtractor={(item)=>item.qrcode}
+        />
+
+    
+     
+        <TouchableOpacity style={{flex:1}} onPress={()=>{navigation.navigate('Qr')}}>
         <LinearGradient  colors={['#42A341', '#074C00', '#074C00']} style={{height:50, width:'98%', position:'absolute',bottom:5,backgroundColor:'green', borderRadius:10, justifyContent:'center', alignSelf:"center"}}>
             <Text style={{alignSelf:'center',fontSize:25, fontWeight:'900',color:'#fff'}}>
               Link a New Node
@@ -70,9 +92,4 @@ const DashBoard=({navigation})=> {
 export default DashBoard;
 
 
-{/* <LinearGradient
-colors={['#42A341', '#074C00', '#074C00']}
-style={{height:40,width:'90%', borderRadius:4, flexDirection:'row', alignItems:'center', justifyContent:'center', marginBottom:10, alignSelf:'center'}}>            
-<Ionicons name="eye-sharp" size={24} color="blue" />
-<Text style={{fontSize:20, color:'#fff', alignSelf:'center', marginLeft:10}}>View Data</Text>
-</LinearGradient> */}
+

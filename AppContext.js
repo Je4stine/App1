@@ -4,14 +4,13 @@ const AppContext = createContext();
 
 const AppProvider = (props) => {
   
-  const [interval, setInterval]=useState(0);
-  const [ph, setPh]=useState(0);
-  const [moisture, setMoisture]=useState(0);
-  const [info, setInfo]= useState('')
-  const [finalState, setFinalState] = useState([]);
- 
+  const [useremail, setUseremail]=useState('');
+  const [user, setUser]=useState([]);
+  const [signedIn, setSignedIn]=useState(false);
+  const [serialNumber, setSerialNumber]=useState('');
+
   return (
-    <AppContext.Provider value={{finalState, setFinalState, interval, setInterval,ph,setPh, moisture, setMoisture, info,setInfo}}>
+    <AppContext.Provider value={{useremail, setUseremail, signedIn, setSignedIn, user, setUser, serialNumber, setSerialNumber}}>
       {props.children}
     </AppContext.Provider>
   );

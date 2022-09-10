@@ -33,5 +33,5 @@ const auth = firebase.auth();
 //   // Check for user status
 // });
 
-export { db, auth };
+export { db, auth, firebase };
 
